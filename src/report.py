@@ -158,10 +158,18 @@ def _rang(l: dict) -> str:
 <td><span class="marque {classe}">{lib}</span></td></tr>"""
 
 
+VISIBLES = 8
+
+
 def _tableau(camp: dict) -> str:
-    lignes = camp["lignes"]
-    vus = [l for l in lignes if l.get("verdict") in ("conseille", "verifier")]
-    tete = vus or lignes[:5]
+    """Les joueurs du plus probable au moins probable.
+
+    Trier par « valeur » plaçait un troisième ligne remplaçant en tête et
+    reléguait l'ailier à 60 % derrière un repli : la première question est
+    « qui va marquer », pas « où est l'écart avec la cote ».
+    """
+    lignes = sorted(camp["lignes"], key=lambda l: -l["p_essai"])
+    tete = lignes[:VISIBLES]
     reste = [l for l in lignes if l not in tete]
     detail = (f"marché {camp['essais_marche']:.1f} essais"
               if camp.get("essais_marche")
@@ -220,6 +228,37 @@ def _carte(a: dict) -> str:
 # Page principale
 # --------------------------------------------------------------------------
 
+FAVORIS = 14
+
+
+def _favoris_du_jour(analyses) -> str:
+    """Qui a le plus de chances de marquer aujourd'hui, tous matchs confondus."""
+    tout = [(a, c, l) for a in analyses for c in a["camps"] for l in c["lignes"]
+            if l.get("dispo", 1) >= 0.5]
+    if not tout:
+        return ""
+    tout.sort(key=lambda x: -x[2]["p_essai"])
+    rangs = []
+    for a, c, l in tout[:FAVORIS]:
+        cote = f"{l['cote']:.2f}" if l.get("cote") else "—"
+        badge = ""
+        if l.get("verdict") == "conseille":
+            badge = " <span class='marque oui'>value</span>"
+        rangs.append(f"""<div class="sur">
+<div class="sur-proba">{l['p_essai']:.0%}</div>
+<div class="sur-quoi"><b>{_e(l['nom'])}</b>{badge}
+<small>{_e(postes.NOMS.get(l.get('poste'), '') or 'poste inconnu')} · {_e(c['nom'])}</small></div>
+<div class="sur-match">{_e(a['rencontre'])}<small>{_e(a['competition'])} ·
+{_e(_heure(a.get('debut')))}</small></div>
+<div class="sur-cote">cote<b>{cote}</b></div></div>""")
+    return f"""<section class="bilan surs"><div class="bilan-tete">
+<h2>Les plus gros favoris à l'essai</h2>
+<p>Classement par chance de marquer, tous les matchs du jour confondus. C'est la
+réponse à « qui va marquer ». Attention : les favoris évidents sont aussi ceux que
+le bookmaker cote le mieux — fort ne veut pas dire rentable.</p></div>
+{''.join(rangs)}</section>"""
+
+
 def _conseils_du_jour(analyses) -> str:
     conseils = []
     for a in analyses:
@@ -229,24 +268,27 @@ def _conseils_du_jour(analyses) -> str:
                     conseils.append((a, c, l))
     if not conseils:
         return """<section class="bilan"><div class="bilan-tete">
-<h2>Aucun pari conseillé</h2>
-<p>Le modèle n'a rien trouvé qui passe tous les garde-fous. C'est le cas le plus
-fréquent, et de loin le plus sain sur un marché aussi chargé en marge.</p>
+<h2>Aucun écart exploitable avec la cote</h2>
+<p>Le modèle est d'accord avec le bookmaker partout aujourd'hui. C'est le cas le
+plus fréquent, et de loin le plus sain sur un marché aussi chargé en marge.</p>
 </div></section>"""
     conseils.sort(key=lambda x: -(x[2].get("gain") or 0))
     rangs = "".join(f"""<div class="sur">
 <div class="sur-proba">{l['p_essai']:.0%}</div>
 <div class="sur-quoi"><b>{_e(l['nom'])}</b>
 <small>{_e(postes.NOMS.get(l.get('poste'), '') or 'poste inconnu')} ·
-marché {_pc(l.get('p_marche'))}</small></div>
+le marché le voit à {_pc(l.get('p_marche'))}</small></div>
 <div class="sur-match">{_e(c['nom'])}<small>{_e(a['rencontre'])} ·
 {_e(a['competition'])}</small></div>
 <div class="sur-cote">cote<b>{l['cote']:.2f}</b>{l['gain']:+.0%}</div>
 </div>""" for a, c, l in conseils)
-    return f"""<section class="bilan surs"><div class="bilan-tete">
-<h2>{len(conseils)} pari{'s' if len(conseils) > 1 else ''} conseillé{'s' if len(conseils) > 1 else ''}</h2>
-<p>Marqueur d'essai à tout moment. Le pari est remboursé si le joueur n'entre pas
-en jeu. Mise plate, 1 % de bankroll, jamais de combiné.</p></div>{rangs}</section>"""
+    s = "s" if len(conseils) > 1 else ""
+    return f"""<section class="bilan"><div class="bilan-tete">
+<h2>{len(conseils)} écart{s} avec la cote</h2>
+<p>Là où le modèle donne plus de chances que le bookmaker. Ce ne sont presque
+jamais les favoris : sur eux le marché est juste. Marqueur d'essai à tout moment,
+remboursé si le joueur n'entre pas en jeu. Mise plate, 1 % de bankroll.</p>
+</div>{rangs}</section>"""
 
 
 def _journal(bilan: dict) -> str:
@@ -325,6 +367,7 @@ def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,
     corps = f"""{_entete("Marqueurs d'essai", sous, "rapport", archives, jour)}
 {synthese}
 {''.join(avis)}
+{_favoris_du_jour(analyses)}
 {_conseils_du_jour(analyses)}
 {corps_matchs}
 {_journal(bilan)}
