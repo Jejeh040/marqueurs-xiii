@@ -1,0 +1,2203 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Marqueurs XIII — 06/08/2026 à 20h00</title>
+<style>
+:root{
+  --ground:#F5F8F6; --surface:#FFFFFF; --raised:#EEF3F0;
+  --ink:#101E1A; --ink-soft:#5D706A; --ink-faint:#8A9B95;
+  --line:#DFE7E2; --line-strong:#C6D3CD;
+  --accent:#0B6E63; --accent-wash:rgba(11,110,99,.08);
+  --over:#1A6B3C; --under:#8E4319; --warn:#7A5800; --danger:#8E2A2A;
+  --warn-wash:rgba(122,88,0,.10); --danger-wash:rgba(142,42,42,.10);
+  --radius:14px;
+  --font-display:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-data:"Cascadia Mono",ui-monospace,"SF Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0C1211; --surface:#141C1A; --raised:#1B2523;
+    --ink:#E9F0EC; --ink-soft:#9AACA5; --ink-faint:#6F817B;
+    --line:#222E2B; --line-strong:#33423E;
+    --accent:#4FD1C0; --accent-wash:rgba(79,209,192,.10);
+    --over:#5BC98C; --under:#EE9A5D; --warn:#E4B93F; --danger:#EE8B8B;
+    --warn-wash:rgba(228,185,63,.10); --danger-wash:rgba(238,139,139,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0C1211; --surface:#141C1A; --raised:#1B2523;
+  --ink:#E9F0EC; --ink-soft:#9AACA5; --ink-faint:#6F817B;
+  --line:#222E2B; --line-strong:#33423E;
+  --accent:#4FD1C0; --accent-wash:rgba(79,209,192,.10);
+  --over:#5BC98C; --under:#EE9A5D; --warn:#E4B93F; --danger:#EE8B8B;
+  --warn-wash:rgba(228,185,63,.10); --danger-wash:rgba(238,139,139,.10);
+}
+:root[data-theme="light"]{
+  --ground:#F5F8F6; --surface:#FFFFFF; --raised:#EEF3F0;
+  --ink:#101E1A; --ink-soft:#5D706A; --ink-faint:#8A9B95;
+  --line:#DFE7E2; --line-strong:#C6D3CD;
+  --accent:#0B6E63; --accent-wash:rgba(11,110,99,.08);
+  --over:#1A6B3C; --under:#8E4319; --warn:#7A5800; --danger:#8E2A2A;
+  --warn-wash:rgba(122,88,0,.10); --danger-wash:rgba(142,42,42,.10);
+}
+
+*{box-sizing:border-box}
+body{margin:0;padding:0;background:var(--ground);color:var(--ink);
+  font:400 16px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:32px 18px 72px;
+  display:flex;flex-direction:column;gap:22px}
+
+/* ---------- en-tete ---------- */
+.tete{display:flex;flex-direction:column;gap:6px}
+.eyebrow{margin:0;font:600 12px/1 var(--font-body);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font:700 clamp(28px,5vw,40px)/1.1 var(--font-display);
+  letter-spacing:-.02em;text-wrap:balance}
+.sous{margin:0;color:var(--ink-soft);font-size:14px}
+.barre-liens{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.lien{font:600 12.5px/1 var(--font-body);text-decoration:none;color:var(--ink-soft);
+  border:1px solid var(--line-strong);border-radius:999px;padding:7px 13px;
+  background:var(--surface)}
+.lien:hover{color:var(--ink);border-color:var(--ink-faint)}
+.lien.actif{background:var(--accent);border-color:var(--accent);color:var(--ground)}
+.bascule{appearance:none;cursor:pointer;margin-left:auto}
+
+/* ---------- archives ---------- */
+.archives{display:flex;gap:6px;flex-wrap:wrap}
+.archives a{font:600 11.5px/1 var(--font-data);text-decoration:none;padding:6px 10px;
+  border-radius:999px;background:var(--surface);border:1px solid var(--line);
+  color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.archives a:hover{border-color:var(--ink-faint);color:var(--ink)}
+.archives a.actif{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+/* ---------- barre de synthese ---------- */
+.synthese{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;margin:0;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.syn{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:3px}
+.syn dt{margin:0;font:600 11px/1 var(--font-body);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.syn dd{margin:0;font:600 20px/1.2 var(--font-data);font-variant-numeric:tabular-nums}
+.syn dd small{font:400 13px/1 var(--font-body);color:var(--ink-soft)}
+.syn dd.gain{color:var(--over)} .syn dd.perte{color:var(--under)}
+
+/* ---------- messages ---------- */
+.avis{border:1px solid var(--line);border-left-width:3px;border-radius:var(--radius);
+  background:var(--surface);padding:14px 16px;font-size:14px;
+  display:flex;flex-direction:column;gap:6px}
+.avis p{margin:0}
+.avis .titre{font-weight:650;color:var(--ink)}
+.avis.info{border-left-color:var(--accent)}
+.avis.attention{border-left-color:var(--warn);background:var(--warn-wash)}
+.avis.grave{border-left-color:var(--danger);background:var(--danger-wash)}
+
+/* ---------- onglets ---------- */
+.onglets{display:flex;gap:8px;border-bottom:2px solid var(--line)}
+.onglet{appearance:none;background:none;border:none;cursor:pointer;
+  font:650 15px/1 var(--font-display);color:var(--ink-faint);padding:12px 18px;
+  border-bottom:2px solid transparent;margin-bottom:-2px;
+  display:inline-flex;align-items:center;gap:8px}
+.onglet span{font:600 11px/1 var(--font-data);padding:3px 7px;border-radius:999px;
+  background:var(--raised);color:var(--ink-soft)}
+.onglet:hover{color:var(--ink-soft)}
+.onglet.actif{color:var(--accent);border-bottom-color:var(--accent)}
+.onglet.actif span{background:var(--accent);color:var(--ground)}
+.groupe-matchs{display:flex;flex-direction:column;gap:22px}
+.groupe-matchs[hidden]{display:none}
+
+/* ---------- carte de match ---------- */
+.match{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden}
+.match-tete{padding:18px 20px 16px;display:flex;flex-direction:column;gap:10px;
+  border-bottom:1px solid var(--line)}
+.contexte{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
+  font:500 12px/1 var(--font-body);color:var(--ink-soft)}
+.circuit{font:700 11px/1 var(--font-body);letter-spacing:.1em;color:var(--accent);
+  padding:3px 7px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+  border-radius:4px}
+.affiche{margin:0;font:650 clamp(19px,3.2vw,24px)/1.25 var(--font-display);
+  letter-spacing:-.01em;text-wrap:balance}
+.affiche .contre{color:var(--ink-faint);font-weight:400;padding:0 6px}
+
+/* ---------- chiffres cles ---------- */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));
+  gap:1px;background:var(--line);margin:0}
+.ch{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.ch dt{margin:0;font:600 10.5px/1.3 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.ch dd{margin:0;font:600 22px/1.15 var(--font-data);font-variant-numeric:tabular-nums}
+.ch.majeur dd{color:var(--accent);font-size:27px}
+
+/* ---------- distribution ---------- */
+.distribution{padding:16px 20px 12px;border-top:1px solid var(--line)}
+.dist-titre{margin:0 0 10px;font:600 10.5px/1 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.barres{display:flex;align-items:flex-end;gap:2px;height:64px}
+.barre{flex:1 1 0;background:var(--line-strong);border-radius:2px 2px 0 0;min-height:2px}
+.barre.dedans{background:var(--accent);opacity:.5}
+.barre.pivot{background:var(--accent);opacity:1}
+.echelle{display:flex;justify-content:space-between;margin-top:6px;
+  font:500 11px/1 var(--font-data);color:var(--ink-faint);font-variant-numeric:tabular-nums}
+
+/* ---------- tableaux ---------- */
+.marche{display:flex;align-items:center;gap:9px;padding:16px 20px 0;
+  font:650 13px/1 var(--font-display)}
+.marche::before{content:"";width:4px;height:15px;border-radius:2px;flex:none;
+  background:var(--accent)}
+.marche .det{font:500 11.5px/1 var(--font-body);color:var(--ink-soft);margin-left:auto}
+.defilement{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:9px 14px;text-align:right;border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
+th{font:600 11px/1.3 var(--font-body);letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--font-data)}
+td:first-child{font-weight:650;font-family:var(--font-body)}
+tbody tr:last-child td{border-bottom:none}
+tr.pivot td{background:var(--accent-wash)}
+.det{display:block;font:400 11.5px/1.4 var(--font-body);color:var(--ink-faint)}
+.gain{color:var(--over);font-weight:650} .perte{color:var(--ink-faint)}
+.marque{display:inline-block;font:600 10px/1 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.marque.oui{background:var(--over);color:var(--ground)}
+.marque.verifier{background:var(--warn-wash);color:var(--warn);
+  border:1px solid color-mix(in srgb,var(--warn) 45%,transparent)}
+.marque.non{background:var(--raised);color:var(--ink-faint);border:1px solid var(--line-strong)}
+.marque.ecart{background:var(--danger-wash);color:var(--danger);
+  border:1px solid color-mix(in srgb,var(--danger) 45%,transparent)}
+summary{cursor:pointer;padding:12px 20px;font-size:13px;color:var(--ink-soft)}
+summary:hover{color:var(--ink)}
+.mode-emploi{margin:0;padding:12px 20px 18px;font-size:13px;color:var(--ink-soft);
+  border-top:1px solid var(--line);line-height:1.6}
+.mode-emploi b{color:var(--ink)}
+
+/* ---------- blocs ---------- */
+.bilan{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden}
+.bilan-tete{padding:16px 20px;border-bottom:1px solid var(--line)}
+.bilan-tete h2{margin:0 0 4px;font:650 18px/1.25 var(--font-display)}
+.bilan-tete p{margin:0;font-size:13px;color:var(--ink-soft)}
+.surs{border-color:color-mix(in srgb,var(--over) 45%,transparent)}
+.surs .bilan-tete{border-bottom-color:color-mix(in srgb,var(--over) 30%,transparent);
+  background:color-mix(in srgb,var(--over) 7%,transparent)}
+.surs h2{color:var(--over)}
+.sur{display:flex;align-items:center;gap:14px;padding:11px 20px;
+  border-bottom:1px solid var(--line);flex-wrap:wrap}
+.sur:last-child{border-bottom:none}
+.sur-proba{flex:none;width:52px;font:700 19px/1 var(--font-data);color:var(--over);
+  font-variant-numeric:tabular-nums}
+.sur-quoi{flex:1 1 190px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sur-quoi b{font:650 15px/1.2 var(--font-display)}
+.sur-quoi small,.sur-match small{font-size:11.5px;color:var(--ink-faint)}
+.sur-match{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:2px;
+  font-size:13px;color:var(--ink-soft)}
+.sur-cote{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  font:600 10.5px/1 var(--font-body);color:var(--ink-faint);text-transform:uppercase;
+  letter-spacing:.06em}
+.sur-cote b{font:650 16px/1 var(--font-data);color:var(--ink);text-transform:none}
+.pari{display:flex;align-items:baseline;gap:11px;padding:9px 20px;font-size:13px;
+  flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.pari:last-child{border-bottom:none}
+.issue{flex:none;width:66px;font:700 10px/1 var(--font-body);letter-spacing:.07em;
+  text-transform:uppercase}
+.issue.gagne{color:var(--over)} .issue.perdu{color:var(--under)}
+.issue.rembourse{color:var(--ink-faint)}
+.quoi-pari{flex:1 1 260px;min-width:0;color:var(--ink-soft)}
+.quoi-pari b{color:var(--ink)}
+.reel{flex:none;color:var(--ink-soft);font-family:var(--font-data);font-size:12.5px;
+  font-variant-numeric:tabular-nums}
+.rendement{margin:0;padding:13px 20px;font-size:13.5px;color:var(--ink-soft);
+  border-left:3px solid var(--line);border-top:1px solid var(--line);background:var(--surface)}
+.rendement b{color:var(--ink);font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.rendement.gain{border-left-color:var(--over)}
+.rendement.perte{border-left-color:var(--under)}
+.vide{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:38px 20px;text-align:center;color:var(--ink-soft)}
+.vide-journal{padding:26px 20px;text-align:center;color:var(--ink-soft);font-size:13.5px}
+footer{color:var(--ink-faint);font-size:12.5px;text-align:center;line-height:1.7;
+  border-top:1px solid var(--line);padding-top:20px}
+footer a{color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div class="wrap">
+<header class="tete">
+<p class="eyebrow">Rugby à XIII · NRL &amp; Super League</p>
+<h1>Marqueurs d&#x27;essai</h1>
+<p class="sous">Généré le 06/08/2026 à 20h00 · cotes Unibet, offre publique Kambi</p>
+<div class="barre-liens"><a class='lien actif' href='index.html'>Rapport du jour</a><a class='lien' href='cotes.html'>Toutes les cotes</a>
+<button class="lien bascule" id="bascule" type="button">Thème sombre</button></div>
+</header><nav class='archives'><a class='actif' href='2026-08-06.html'>06/08</a><a class='' href='2026-08-05.html'>05/08</a><a class='' href='2026-08-03.html'>03/08</a><a class='' href='2026-08-02.html'>02/08</a><a class='' href='2026-08-01.html'>01/08</a></nav>
+<dl class="synthese">
+<div class="syn"><dt>matchs analysés</dt><dd>9</dd></div>
+<div class="syn"><dt>paris conseillés</dt><dd>5</dd></div>
+<div class="syn"><dt>conseils tranchés</dt><dd>10</dd></div>
+<div class="syn"><dt>réussite</dt><dd>30%</dd></div>
+<div class="syn"><dt>rendement</dt><dd class='gain'>+2.5%</dd></div>
+</dl>
+<div class='avis attention'><p>Non analysés faute d&#x27;historique : St. Helens - Hull FC, The Dolphins - Brisbane Broncos</p></div><div class='avis attention'><p>Compétitions cotées mais hors périmètre (NRL (F)) : SofaScore n&#x27;y publie aucune composition d&#x27;équipe, le modèle ne peut pas savoir qui joue.</p></div><div class='avis attention'><p>3 match(s) sans cote de total d&#x27;essais (Super League) : le modèle y estime seul le nombre d&#x27;essais, ses probabilités y sont moins sûres.</p></div>
+<section class="bilan"><div class="bilan-tete">
+<h2>Résultats de la journée du 06/08/2026</h2>
+<p>Les conseils déjà tranchés sur le résultat réel des matchs.</p></div>
+<p class="rendement gain"><b>2</b> sur <b>2</b> pour 0.7 attendus · <b>+5.00</b> unités</p><div class="pari">
+<span class="issue gagne">gagné</span>
+<span class="quoi-pari"><b>Jake Clifford</b> — Gold Coast Titans - North Queensland Cowboys</span>
+<span class="reel">cote 4.00 · annoncé 30%</span>
+</div><div class="pari">
+<span class="issue gagne">gagné</span>
+<span class="quoi-pari"><b>Jaxon Purdue</b> — Gold Coast Titans - North Queensland Cowboys</span>
+<span class="reel">cote 3.00 · annoncé 42%</span>
+</div></section>
+<section class="bilan surs"><div class="bilan-tete">
+<h2>Les plus gros favoris à l'essai</h2>
+<p>Classement par chance de marquer, tous les matchs du jour confondus. C'est la
+réponse à « qui va marquer ». Attention : les favoris évidents sont aussi ceux que
+le bookmaker cote le mieux — fort ne veut pas dire rentable.</p></div>
+<div class="sur">
+<div class="sur-proba">65%</div>
+<div class="sur-quoi"><b>Alex Johnston</b>
+<small>Ailier · South Sydney Rabbitohs</small></div>
+<div class="sur-match">South Sydney Rabbitohs - Parramatta Eels<small>NRL ·
+Sat 08/08 à 11h35</small></div>
+<div class="sur-cote">cote<b>1.50</b></div></div><div class="sur">
+<div class="sur-proba">63%</div>
+<div class="sur-quoi"><b>Ronaldo Mulitalo</b>
+<small>Ailier · Cronulla Sharks</small></div>
+<div class="sur-match">St. George Illawarra Dragons - Cronulla Sharks<small>NRL ·
+Sun 09/08 à 08h05</small></div>
+<div class="sur-cote">cote<b>1.50</b></div></div><div class="sur">
+<div class="sur-proba">61%</div>
+<div class="sur-quoi"><b>Mark Nawaqanitawase</b>
+<small>Ailier · Sydney Roosters</small></div>
+<div class="sur-match">Sydney Roosters - Canterbury Bulldogs<small>NRL ·
+Fri 07/08 à 12h00</small></div>
+<div class="sur-cote">cote<b>1.60</b></div></div><div class="sur">
+<div class="sur-proba">61%</div>
+<div class="sur-quoi"><b>Joe Burgess</b>
+<small>Ailier · Hull Kingston Rovers</small></div>
+<div class="sur-match">Castleford Tigers - Hull Kingston Rovers<small>Super League ·
+Fri 07/08 à 21h00</small></div>
+<div class="sur-cote">cote<b>1.50</b></div></div><div class="sur">
+<div class="sur-proba">58%</div>
+<div class="sur-quoi"><b>Josh Charnley</b>
+<small>Ailier · Leigh Leopards</small></div>
+<div class="sur-match">Leigh Leopards - York Knights<small>Super League ·
+Fri 07/08 à 21h00</small></div>
+<div class="sur-cote">cote<b>1.50</b></div></div><div class="sur">
+<div class="sur-proba">57%</div>
+<div class="sur-quoi"><b>Thomas Jenkins</b>
+<small>Ailier · Penrith Panthers</small></div>
+<div class="sur-match">New Zealand Warriors - Penrith Panthers<small>NRL ·
+Fri 07/08 à 10h00</small></div>
+<div class="sur-cote">cote<b>1.65</b></div></div><div class="sur">
+<div class="sur-proba">56%</div>
+<div class="sur-quoi"><b>Alofiana Khan-Pereira</b>
+<small>Ailier · New Zealand Warriors</small></div>
+<div class="sur-match">New Zealand Warriors - Penrith Panthers<small>NRL ·
+Fri 07/08 à 10h00</small></div>
+<div class="sur-cote">cote<b>2.10</b></div></div><div class="sur">
+<div class="sur-proba">55%</div>
+<div class="sur-quoi"><b>Sione Katoa</b>
+<small>Ailier · Cronulla Sharks</small></div>
+<div class="sur-match">St. George Illawarra Dragons - Cronulla Sharks<small>NRL ·
+Sun 09/08 à 08h05</small></div>
+<div class="sur-cote">cote<b>1.55</b></div></div><div class="sur">
+<div class="sur-proba">55%</div>
+<div class="sur-quoi"><b>David Armstrong</b>
+<small>Arrière · Leigh Leopards</small></div>
+<div class="sur-match">Leigh Leopards - York Knights<small>Super League ·
+Fri 07/08 à 21h00</small></div>
+<div class="sur-cote">cote<b>1.67</b></div></div><div class="sur">
+<div class="sur-proba">54%</div>
+<div class="sur-quoi"><b>Tom Davies</b>
+<small>Ailier · Hull Kingston Rovers</small></div>
+<div class="sur-match">Castleford Tigers - Hull Kingston Rovers<small>Super League ·
+Fri 07/08 à 21h00</small></div>
+<div class="sur-cote">cote<b>1.65</b></div></div><div class="sur">
+<div class="sur-proba">54%</div>
+<div class="sur-quoi"><b>Moses Leo</b>
+<small>Ailier · Melbourne Storm</small></div>
+<div class="sur-match">Melbourne Storm - Manly Sea Eagles<small>NRL ·
+Sat 08/08 à 07h00</small></div>
+<div class="sur-cote">cote<b>2.00</b></div></div><div class="sur">
+<div class="sur-proba">49%</div>
+<div class="sur-quoi"><b>Jason Saab</b>
+<small>Ailier · Manly Sea Eagles</small></div>
+<div class="sur-match">Melbourne Storm - Manly Sea Eagles<small>NRL ·
+Sat 08/08 à 07h00</small></div>
+<div class="sur-cote">cote<b>1.80</b></div></div><div class="sur">
+<div class="sur-proba">48%</div>
+<div class="sur-quoi"><b>Innes Senior</b>
+<small>Remplaçant · Leigh Leopards</small></div>
+<div class="sur-match">Leigh Leopards - York Knights<small>Super League ·
+Fri 07/08 à 21h00</small></div>
+<div class="sur-cote">cote<b>1.75</b></div></div><div class="sur">
+<div class="sur-proba">47%</div>
+<div class="sur-quoi"><b>Sualauvi Faalogo</b>
+<small>Arrière · Melbourne Storm</small></div>
+<div class="sur-match">Melbourne Storm - Manly Sea Eagles<small>NRL ·
+Sat 08/08 à 07h00</small></div>
+<div class="sur-cote">cote<b>2.00</b></div></div></section>
+<section class="bilan"><div class="bilan-tete">
+<h2>5 écarts avec la cote</h2>
+<p>Là où le modèle donne plus de chances que le bookmaker. Ce ne sont presque
+jamais les favoris : sur eux le marché est juste. Marqueur d'essai à tout moment,
+remboursé si le joueur n'entre pas en jeu. Mise plate, 1 % de bankroll.</p>
+</div><div class="sur">
+<div class="sur-proba">23%</div>
+<div class="sur-quoi"><b>Liam Horne</b>
+<small>Remplaçant ·
+le marché le voit à 16%</small></div>
+<div class="sur-match">Leigh Leopards<small>Leigh Leopards - York Knights ·
+Super League</small></div>
+<div class="sur-cote">cote<b>5.50</b>+27%</div>
+</div><div class="sur">
+<div class="sur-proba">34%</div>
+<div class="sur-quoi"><b>Scott Galeano</b>
+<small>Ailier ·
+le marché le voit à 25%</small></div>
+<div class="sur-match">York Knights<small>Leigh Leopards - York Knights ·
+Super League</small></div>
+<div class="sur-cote">cote<b>3.50</b>+20%</div>
+</div><div class="sur">
+<div class="sur-proba">21%</div>
+<div class="sur-quoi"><b>Cody Hunter</b>
+<small>poste inconnu ·
+le marché le voit à 16%</small></div>
+<div class="sur-match">York Knights<small>Leigh Leopards - York Knights ·
+Super League</small></div>
+<div class="sur-cote">cote<b>5.50</b>+14%</div>
+</div><div class="sur">
+<div class="sur-proba">40%</div>
+<div class="sur-quoi"><b>Fletcher Sharpe</b>
+<small>Demi ·
+le marché le voit à 30%</small></div>
+<div class="sur-match">Newcastle Knights<small>Canberra Raiders - Newcastle Knights ·
+NRL</small></div>
+<div class="sur-cote">cote<b>2.85</b>+14%</div>
+</div><div class="sur">
+<div class="sur-proba">47%</div>
+<div class="sur-quoi"><b>Lehi Hopoate</b>
+<small>Ailier ·
+le marché le voit à 36%</small></div>
+<div class="sur-match">Manly Sea Eagles<small>Melbourne Storm - Manly Sea Eagles ·
+NRL</small></div>
+<div class="sur-cote">cote<b>2.40</b>+12%</div>
+</div></section>
+<nav class='onglets'><button class='onglet actif' type='button' data-cible='g0'>NRL<span>6</span></button><button class='onglet' type='button' data-cible='g1'>Super League<span>3</span></button></nav><div class='groupe-matchs' id='g0'><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Fri 07/08 à 10h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">New Zealand Warriors<span class='contre'>—</span>Penrith Panthers</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>7.4</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>6.7</dd></div><div class='ch'><dt>New Zealand Warriors</dt><dd>3.4</dd></div><div class='ch'><dt>Penrith Panthers</dt><dd>3.9</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 7 · plus de 6.5 essais : 61%</p>
+<div class="barres"><div class='barre' style='height:11%' title='2 essais : 2%'></div><div class='barre' style='height:28%' title='3 essais : 4%'></div><div class='barre' style='height:52%' title='4 essais : 8%'></div><div class='barre' style='height:77%' title='5 essais : 11%'></div><div class='barre' style='height:95%' title='6 essais : 14%'></div><div class='barre dedans pivot' style='height:100%' title='7 essais : 15%'></div><div class='barre dedans' style='height:92%' title='8 essais : 14%'></div><div class='barre dedans' style='height:76%' title='9 essais : 11%'></div><div class='barre dedans' style='height:56%' title='10 essais : 8%'></div><div class='barre dedans' style='height:38%' title='11 essais : 6%'></div><div class='barre dedans' style='height:23%' title='12 essais : 3%'></div><div class='barre dedans' style='height:13%' title='13 essais : 2%'></div><div class='barre dedans' style='height:7%' title='14 essais : 1%'></div></div>
+<div class="echelle"><span>2</span><span>14</span></div></div>
+<div class="marche">New Zealand Warriors
+<span class="det">domicile · marché 3.4 essais · marge du book 26%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Alofiana Khan-Pereira<span class="det">Ailier · 66 matchs connus</span></td>
+<td>56%</td><td>40%</td>
+<td>2.10</td>
+<td><span class='gain'>+17%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Charnze Nicoll-Klokstad<span class="det">Arrière · 112 matchs connus</span></td>
+<td>22%</td><td>23%</td>
+<td>3.60</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Adam Pompey<span class="det">Centre · 125 matchs connus</span></td>
+<td>21%</td><td>23%</td>
+<td>3.60</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ali Leiataua<span class="det">Centre · 31 matchs connus</span></td>
+<td>21%</td><td>20%</td>
+<td>4.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Leka Halasima<span class="det">2e ligne · 41 matchs connus</span></td>
+<td>20%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Luke Metcalf<span class="det">Demi · 43 matchs connus</span></td>
+<td>20%</td><td>20%</td>
+<td>4.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Chanel Harris-Tavita<span class="det">Demi · 96 matchs connus</span></td>
+<td>20%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Taine Tuaupiki<span class="det">Arrière · 40 matchs connus</span></td>
+<td>14%</td><td>23%</td>
+<td>3.60</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 12 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Dallin Watene-Zelezniak<span class="det">0 matchs connus</span></td>
+<td>13%</td><td>39%</td>
+<td>2.15</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Healey<span class="det">0 matchs connus</span></td>
+<td>13%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='gain'>+47%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Jacob Laban<span class="det">2e ligne · 35 matchs connus</span></td>
+<td>13%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Morgan Gannon<span class="det">Remplaçant · 65 matchs connus</span></td>
+<td>11%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-36%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kurt Capewell<span class="det">2e ligne · 124 matchs connus</span></td>
+<td>10%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Wayde Egan<span class="det">Talonneur · 139 matchs connus</span></td>
+<td>10%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>James Fisher-Harris<span class="det">Pilier · 151 matchs connus</span></td>
+<td>6%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-31%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Eddie Ieremia-Toeava<span class="det">Remplaçant · 10 matchs connus</span></td>
+<td>6%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-59%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mitchell Barnett<span class="det">Pilier · 110 matchs connus</span></td>
+<td>5%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-40%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Erin Clark<span class="det">Troisième ligne · 136 matchs connus</span></td>
+<td>5%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-42%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tanner Stowers-Smith<span class="det">Remplaçant · 27 matchs connus</span></td>
+<td>5%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-50%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Riley Price<span class="det">Remplaçant · 3 matchs connus · titulaire incertain</span></td>
+<td>0%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-95%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Penrith Panthers
+<span class="det">extérieur · marché 3.9 essais · marge du book 41%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Thomas Jenkins<span class="det">Ailier · 50 matchs connus</span></td>
+<td>57%</td><td>48%</td>
+<td>1.65</td>
+<td><span class='perte'>-6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Brian To&#x27;o<span class="det">Ailier · 135 matchs connus</span></td>
+<td>41%</td><td>39%</td>
+<td>2.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Paul Alamoti<span class="det">Centre · 73 matchs connus</span></td>
+<td>28%</td><td>25%</td>
+<td>3.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Izack Tago<span class="det">Centre · 108 matchs connus</span></td>
+<td>27%</td><td>25%</td>
+<td>3.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nathan Cleary<span class="det">Demi · 131 matchs connus</span></td>
+<td>21%</td><td>21%</td>
+<td>3.50</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Isaiah Papali&#x27;i<span class="det">2e ligne · 147 matchs connus</span></td>
+<td>20%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-2%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Liam Martin<span class="det">2e ligne · 138 matchs connus</span></td>
+<td>19%</td><td>23%</td>
+<td>3.25</td>
+<td><span class='perte'>-38%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jesse McLean<span class="det">Remplaçant · 3 matchs connus</span></td>
+<td>17%</td><td>39%</td>
+<td>2.00</td>
+<td><span class='perte'>-67%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 12 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Blaize Talagi<span class="det">0 matchs connus</span></td>
+<td>16%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-22%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Freddy Lussick<span class="det">Remplaçant · 62 matchs connus</span></td>
+<td>14%</td><td>10%</td>
+<td>7.00</td>
+<td><span class='gain'>+1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Liam Henry<span class="det">Remplaçant · 55 matchs connus</span></td>
+<td>13%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-33%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Scott Sorensen<span class="det">2e ligne · 127 matchs connus</span></td>
+<td>9%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-54%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Billy Phillips<span class="det">Remplaçant · 16 matchs connus</span></td>
+<td>9%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-54%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lindsay Smith<span class="det">Pilier · 95 matchs connus</span></td>
+<td>8%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Isaah Yeo<span class="det">Troisième ligne · 156 matchs connus</span></td>
+<td>8%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jaxen Edgar<span class="det">Remplaçant · 3 matchs connus · titulaire incertain</span></td>
+<td>6%</td><td>25%</td>
+<td>3.00</td>
+<td><span class='perte'>-81%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Billy Scott<span class="det">Remplaçant · 4 matchs connus</span></td>
+<td>5%</td><td>11%</td>
+<td>6.50</td>
+<td><span class='perte'>-67%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Moses Leota<span class="det">Pilier · 160 matchs connus</span></td>
+<td>5%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-58%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Cole<span class="det">Demi · 15 matchs connus · titulaire incertain</span></td>
+<td>4%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-82%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Luron Patea<span class="det">Remplaçant · 14 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-74%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Fri 07/08 à 12h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Sydney Roosters<span class='contre'>—</span>Canterbury Bulldogs</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>8.0</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>7.4</dd></div><div class='ch'><dt>Sydney Roosters</dt><dd>4.5</dd></div><div class='ch'><dt>Canterbury Bulldogs</dt><dd>3.6</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 8 · plus de 7.5 essais : 55%</p>
+<div class="barres"><div class='barre' style='height:8%' title='2 essais : 1%'></div><div class='barre' style='height:20%' title='3 essais : 3%'></div><div class='barre' style='height:40%' title='4 essais : 6%'></div><div class='barre' style='height:65%' title='5 essais : 9%'></div><div class='barre' style='height:87%' title='6 essais : 12%'></div><div class='barre' style='height:100%' title='7 essais : 14%'></div><div class='barre dedans pivot' style='height:100%' title='8 essais : 14%'></div><div class='barre dedans' style='height:89%' title='9 essais : 12%'></div><div class='barre dedans' style='height:72%' title='10 essais : 10%'></div><div class='barre dedans' style='height:52%' title='11 essais : 7%'></div><div class='barre dedans' style='height:35%' title='12 essais : 5%'></div><div class='barre dedans' style='height:22%' title='13 essais : 3%'></div><div class='barre dedans' style='height:12%' title='14 essais : 2%'></div><div class='barre dedans' style='height:7%' title='15 essais : 1%'></div></div>
+<div class="echelle"><span>2</span><span>15</span></div></div>
+<div class="marche">Sydney Roosters
+<span class="det">domicile · marché 4.5 essais · marge du book 36%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Mark Nawaqanitawase<span class="det">Ailier · 39 matchs connus</span></td>
+<td>61%</td><td>51%</td>
+<td>1.60</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Billy Smith<span class="det">Centre · 53 matchs connus</span></td>
+<td>37%</td><td>45%</td>
+<td>1.80</td>
+<td><span class='perte'>-33%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Robert Toia<span class="det">Centre · 38 matchs connus</span></td>
+<td>33%</td><td>33%</td>
+<td>2.40</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cody Ramsey<span class="det">Ailier · 44 matchs connus</span></td>
+<td>29%</td><td>45%</td>
+<td>1.80</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tommy Talau<span class="det">Ailier · 84 matchs connus · titulaire incertain</span></td>
+<td>26%</td><td>33%</td>
+<td>2.40</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Walker<span class="det">Demi · 103 matchs connus</span></td>
+<td>25%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-25%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Daly Cherry-Evans<span class="det">Demi · 155 matchs connus</span></td>
+<td>23%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='gain'>+5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Hugo Savala<span class="det">Demi · 35 matchs connus</span></td>
+<td>23%</td><td>31%</td>
+<td>2.50</td>
+<td><span class='perte'>-42%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 12 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Siua Wong<span class="det">2e ligne · 58 matchs connus</span></td>
+<td>15%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Connor Watson<span class="det">Remplaçant · 106 matchs connus</span></td>
+<td>14%</td><td>11%</td>
+<td>7.00</td>
+<td><span class='gain'>+1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nat Butcher<span class="det">Remplaçant · 122 matchs connus</span></td>
+<td>14%</td><td>11%</td>
+<td>7.00</td>
+<td><span class='perte'>-5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Reece Robson<span class="det">Talonneur · 146 matchs connus</span></td>
+<td>14%</td><td>11%</td>
+<td>7.00</td>
+<td><span class='perte'>-5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Victor Radley<span class="det">Troisième ligne · 118 matchs connus</span></td>
+<td>12%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='gain'>+6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Egan Butcher<span class="det">Remplaçant · 82 matchs connus</span></td>
+<td>9%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Rex Bassingthwaighte<span class="det">Remplaçant · 3 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>45%</td>
+<td>1.80</td>
+<td><span class='perte'>-85%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Salesi Foketi<span class="det">Remplaçant · 33 matchs connus</span></td>
+<td>8%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-58%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Spencer Leniu<span class="det">Remplaçant · 120 matchs connus</span></td>
+<td>8%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-26%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Naufahu Whyte<span class="det">Pilier · 74 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lindsay Collins<span class="det">Pilier · 115 matchs connus · titulaire incertain</span></td>
+<td>4%</td><td>11%</td>
+<td>7.00</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Benaiah Ioelu<span class="det">Remplaçant · 16 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-76%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Canterbury Bulldogs
+<span class="det">extérieur · marché 3.6 essais · marge du book 14%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Jethro Rinakama<span class="det">Ailier · 14 matchs connus</span></td>
+<td>45%</td><td>40%</td>
+<td>2.25</td>
+<td><span class='gain'>+0%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jacob Kiraz<span class="det">Ailier · 93 matchs connus</span></td>
+<td>36%</td><td>38%</td>
+<td>2.40</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Enari Tuala<span class="det">Ailier · 111 matchs connus</span></td>
+<td>35%</td><td>22%</td>
+<td>4.00</td>
+<td><span class='gain'>+39%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Matt Burton<span class="det">Demi · 140 matchs connus</span></td>
+<td>23%</td><td>28%</td>
+<td>3.25</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Connor Tracey<span class="det">Arrière · 126 matchs connus</span></td>
+<td>20%</td><td>21%</td>
+<td>4.25</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh Curran<span class="det">Remplaçant · 110 matchs connus</span></td>
+<td>20%</td><td>18%</td>
+<td>5.00</td>
+<td><span class='perte'>-1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Galvin<span class="det">Demi · 64 matchs connus</span></td>
+<td>19%</td><td>18%</td>
+<td>5.00</td>
+<td><span class='perte'>-4%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Bronson Xerri<span class="det">Centre · 55 matchs connus</span></td>
+<td>18%</td><td>28%</td>
+<td>3.25</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 12 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Jacob Preston<span class="det">2e ligne · 74 matchs connus · titulaire incertain</span></td>
+<td>15%</td><td>26%</td>
+<td>3.50</td>
+<td><span class='perte'>-48%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Stephen Crichton<span class="det">0 matchs connus</span></td>
+<td>12%</td><td>26%</td>
+<td>3.50</td>
+<td><span class='perte'>-58%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Viliame Kikau<span class="det">0 matchs connus</span></td>
+<td>12%</td><td>18%</td>
+<td>5.00</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sitili Tupouniua<span class="det">2e ligne · 113 matchs connus · titulaire incertain</span></td>
+<td>10%</td><td>14%</td>
+<td>6.50</td>
+<td><span class='perte'>-32%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kurt Mann<span class="det">Remplaçant · 120 matchs connus</span></td>
+<td>8%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jaeman Salmon<span class="det">Troisième ligne · 97 matchs connus</span></td>
+<td>7%</td><td>11%</td>
+<td>8.00</td>
+<td><span class='perte'>-42%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Harry Hayes<span class="det">Remplaçant · 46 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Bailey Hayward<span class="det">Remplaçant · 64 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-35%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jake Turpin<span class="det">Remplaçant · 67 matchs connus</span></td>
+<td>5%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Leo Thompson<span class="det">Pilier · 93 matchs connus</span></td>
+<td>4%</td><td>7%</td>
+<td>13.00</td>
+<td><span class='perte'>-44%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Max King<span class="det">Pilier · 108 matchs connus</span></td>
+<td>4%</td><td>7%</td>
+<td>13.00</td>
+<td><span class='perte'>-44%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sean O&#x27;Sullivan<span class="det">Demi · 56 matchs connus · titulaire incertain</span></td>
+<td>4%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-59%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sat 08/08 à 07h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Melbourne Storm<span class='contre'>—</span>Manly Sea Eagles</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>8.7</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>8.3</dd></div><div class='ch'><dt>Melbourne Storm</dt><dd>4.1</dd></div><div class='ch'><dt>Manly Sea Eagles</dt><dd>4.5</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 8 · plus de 8.5 essais : 50%</p>
+<div class="barres"><div class='barre' style='height:14%' title='3 essais : 2%'></div><div class='barre' style='height:30%' title='4 essais : 4%'></div><div class='barre' style='height:52%' title='5 essais : 7%'></div><div class='barre' style='height:75%' title='6 essais : 10%'></div><div class='barre' style='height:92%' title='7 essais : 13%'></div><div class='barre pivot' style='height:100%' title='8 essais : 14%'></div><div class='barre dedans' style='height:96%' title='9 essais : 13%'></div><div class='barre dedans' style='height:83%' title='10 essais : 11%'></div><div class='barre dedans' style='height:65%' title='11 essais : 9%'></div><div class='barre dedans' style='height:47%' title='12 essais : 6%'></div><div class='barre dedans' style='height:31%' title='13 essais : 4%'></div><div class='barre dedans' style='height:19%' title='14 essais : 3%'></div><div class='barre dedans' style='height:11%' title='15 essais : 2%'></div><div class='barre dedans' style='height:6%' title='16 essais : 1%'></div></div>
+<div class="echelle"><span>3</span><span>16</span></div></div>
+<div class="marche">Melbourne Storm
+<span class="det">domicile · marché 4.1 essais · marge du book 24%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Moses Leo<span class="det">Ailier · 15 matchs connus</span></td>
+<td>54%</td><td>43%</td>
+<td>2.00</td>
+<td><span class='gain'>+8%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sualauvi Faalogo<span class="det">Arrière · 42 matchs connus</span></td>
+<td>47%</td><td>43%</td>
+<td>2.00</td>
+<td><span class='perte'>-6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nick Meaney<span class="det">Centre · 147 matchs connus</span></td>
+<td>30%</td><td>26%</td>
+<td>3.25</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Howarth<span class="det">Centre · 48 matchs connus</span></td>
+<td>23%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Siulagi Tuimalatu-Brown<span class="det">0 matchs connus</span></td>
+<td>22%</td><td>41%</td>
+<td>2.10</td>
+<td><span class='perte'>-55%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyran Wishart<span class="det">Remplaçant · 85 matchs connus</span></td>
+<td>22%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cameron Munster<span class="det">Demi · 138 matchs connus</span></td>
+<td>20%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Trent Toelau<span class="det">Remplaçant · 20 matchs connus</span></td>
+<td>15%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Cooper Clarke<span class="det">2e ligne · 20 matchs connus</span></td>
+<td>15%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joe Chan<span class="det">Remplaçant · 58 matchs connus</span></td>
+<td>13%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-48%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Manaia Waitere<span class="det">Remplaçant · 9 matchs connus</span></td>
+<td>13%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-65%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh King<span class="det">Pilier · 145 matchs connus</span></td>
+<td>11%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='gain'>+0%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Stefano Utoikamanu<span class="det">Pilier · 117 matchs connus</span></td>
+<td>11%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-23%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Trent Loiero<span class="det">Troisième ligne · 113 matchs connus</span></td>
+<td>9%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Oryn Keeley<span class="det">2e ligne · 33 matchs connus · titulaire incertain</span></td>
+<td>7%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-67%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Gabriel Satrick<span class="det">Remplaçant · 1 matchs connus</span></td>
+<td>7%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-51%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Hetherington<span class="det">Remplaçant · 79 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>10.00</td>
+<td><span class='perte'>-37%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Shawn Blore<span class="det">2e ligne · 86 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>10.00</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Hayden Watson<span class="det">Remplaçant · 1 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Stanley Huen<span class="det">Remplaçant · 3 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Davvy Moale<span class="det">Remplaçant · 74 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-77%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Angus Hinchey<span class="det">Remplaçant · 1 matchs connus · titulaire incertain</span></td>
+<td>2%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-91%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Manly Sea Eagles
+<span class="det">extérieur · marché 4.5 essais · marge du book 21%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Jason Saab<span class="det">Ailier · 121 matchs connus</span></td>
+<td>49%</td><td>49%</td>
+<td>1.80</td>
+<td><span class='perte'>-11%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr class='pivot'><td>Lehi Hopoate<span class="det">Ailier · 54 matchs connus</span></td>
+<td>47%</td><td>36%</td>
+<td>2.40</td>
+<td><span class='gain'>+12%</span></td>
+<td><span class="marque oui">pari conseillé</span></td></tr><tr><td>Tolutau Koula<span class="det">Centre · 97 matchs connus</span></td>
+<td>37%</td><td>38%</td>
+<td>2.25</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Reuben Garrick<span class="det">Centre · 149 matchs connus</span></td>
+<td>35%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-2%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Blake Wilson<span class="det">Ailier · 28 matchs connus · titulaire incertain</span></td>
+<td>30%</td><td>43%</td>
+<td>2.00</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Haumole Olakau&#x27;atu<span class="det">2e ligne · 123 matchs connus</span></td>
+<td>29%</td><td>38%</td>
+<td>2.25</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joey Walsh<span class="det">Demi · 8 matchs connus</span></td>
+<td>22%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jamal Fogarty<span class="det">Demi · 133 matchs connus</span></td>
+<td>15%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Hugo Hart<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>15%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Onitoni Large<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>15%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ethan Bullemor<span class="det">Remplaçant · 117 matchs connus</span></td>
+<td>13%</td><td>10%</td>
+<td>8.00</td>
+<td><span class='gain'>+7%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh Feledy<span class="det">Remplaçant · 11 matchs connus</span></td>
+<td>11%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-67%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jake Simpkin<span class="det">Remplaçant · 77 matchs connus</span></td>
+<td>10%</td><td>10%</td>
+<td>8.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nathan Brown<span class="det">Remplaçant · 108 matchs connus</span></td>
+<td>8%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Taniela Paseka<span class="det">Pilier · 115 matchs connus</span></td>
+<td>7%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-37%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Simione Laiafi<span class="det">Remplaçant · 9 matchs connus</span></td>
+<td>7%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-52%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jake Trbojevic<span class="det">Troisième ligne · 139 matchs connus</span></td>
+<td>7%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Fletcher Baker<span class="det">Remplaçant · 52 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-51%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Corey Waddell<span class="det">Remplaçant · 112 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Brandon Wakeham<span class="det">Talonneur · 48 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-66%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jackson Shereb<span class="det">Remplaçant · 4 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-83%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nicholas Lenaz<span class="det">Remplaçant · 2 matchs connus · titulaire incertain</span></td>
+<td>1%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-93%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sat 08/08 à 11h35 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">South Sydney Rabbitohs<span class='contre'>—</span>Parramatta Eels</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>8.2</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>8.7</dd></div><div class='ch'><dt>South Sydney Rabbitohs</dt><dd>5.0</dd></div><div class='ch'><dt>Parramatta Eels</dt><dd>3.1</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 8 · plus de 7.5 essais : 58%</p>
+<div class="barres"><div class='barre' style='height:6%' title='2 essais : 1%'></div><div class='barre' style='height:18%' title='3 essais : 2%'></div><div class='barre' style='height:36%' title='4 essais : 5%'></div><div class='barre' style='height:60%' title='5 essais : 8%'></div><div class='barre' style='height:82%' title='6 essais : 11%'></div><div class='barre' style='height:97%' title='7 essais : 14%'></div><div class='barre dedans pivot' style='height:100%' title='8 essais : 14%'></div><div class='barre dedans' style='height:92%' title='9 essais : 13%'></div><div class='barre dedans' style='height:75%' title='10 essais : 10%'></div><div class='barre dedans' style='height:57%' title='11 essais : 8%'></div><div class='barre dedans' style='height:39%' title='12 essais : 5%'></div><div class='barre dedans' style='height:25%' title='13 essais : 3%'></div><div class='barre dedans' style='height:14%' title='14 essais : 2%'></div><div class='barre dedans' style='height:8%' title='15 essais : 1%'></div><div class='barre dedans' style='height:4%' title='16 essais : 1%'></div></div>
+<div class="echelle"><span>2</span><span>16</span></div></div>
+<div class="marche">South Sydney Rabbitohs
+<span class="det">domicile · marché 5.0 essais · marge du book 27%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Alex Johnston<span class="det">Ailier · 137 matchs connus</span></td>
+<td>65%</td><td>58%</td>
+<td>1.50</td>
+<td><span class='perte'>-2%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cody Walker<span class="det">Demi · 145 matchs connus</span></td>
+<td>33%</td><td>27%</td>
+<td>3.00</td>
+<td><span class='perte'>-1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jye Gray<span class="det">Arrière · 45 matchs connus</span></td>
+<td>29%</td><td>27%</td>
+<td>3.00</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Campbell Graham<span class="det">Centre · 108 matchs connus</span></td>
+<td>29%</td><td>47%</td>
+<td>1.80</td>
+<td><span class='perte'>-48%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tallis Duncan<span class="det">2e ligne · 62 matchs connus</span></td>
+<td>27%</td><td>33%</td>
+<td>2.50</td>
+<td><span class='perte'>-31%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matt Dufty<span class="det">Arrière · 88 matchs connus</span></td>
+<td>27%</td><td>30%</td>
+<td>2.75</td>
+<td><span class='perte'>-25%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>David Fifita<span class="det">2e ligne · 181 matchs connus</span></td>
+<td>26%</td><td>27%</td>
+<td>3.00</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Wighton<span class="det">Demi · 135 matchs connus</span></td>
+<td>22%</td><td>27%</td>
+<td>3.00</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Keaon Koloamatangi<span class="det">2e ligne · 145 matchs connus</span></td>
+<td>21%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='gain'>+24%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Ashton Ward<span class="det">Demi · 17 matchs connus</span></td>
+<td>17%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Moala Graham-Taufa<span class="det">0 matchs connus</span></td>
+<td>17%</td><td>44%</td>
+<td>1.90</td>
+<td><span class='perte'>-69%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tevita Tatola<span class="det">0 matchs connus</span></td>
+<td>17%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='gain'>+49%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Jamie Humphreys<span class="det">Demi · 33 matchs connus</span></td>
+<td>15%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Brandon Smith<span class="det">Talonneur · 117 matchs connus</span></td>
+<td>12%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>John Radel<span class="det">Remplaçant · 4 matchs connus</span></td>
+<td>10%</td><td>23%</td>
+<td>3.50</td>
+<td><span class='perte'>-63%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cameron Murray<span class="det">Troisième ligne · 116 matchs connus</span></td>
+<td>10%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-38%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Hubner<span class="det">Remplaçant · 39 matchs connus</span></td>
+<td>10%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-14%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jayden Sullivan<span class="det">Demi · 53 matchs connus · titulaire incertain</span></td>
+<td>7%</td><td>20%</td>
+<td>4.00</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Adam Elliott<span class="det">Troisième ligne · 98 matchs connus</span></td>
+<td>6%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-68%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Liam Le Blanc<span class="det">Remplaçant · 20 matchs connus</span></td>
+<td>5%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Thomas Fletcher<span class="det">Remplaçant · 7 matchs connus · titulaire incertain</span></td>
+<td>2%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-92%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sean Keppie<span class="det">Pilier · 126 matchs connus · titulaire incertain</span></td>
+<td>2%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-87%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Parramatta Eels
+<span class="det">extérieur · marché 3.1 essais · marge du book 34%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Josh Addo-Carr<span class="det">Ailier · 135 matchs connus</span></td>
+<td>42%</td><td>36%</td>
+<td>2.25</td>
+<td><span class='perte'>-6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Isaiah Iongi<span class="det">Arrière · 34 matchs connus</span></td>
+<td>28%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jordan Samrani<span class="det">Centre · 25 matchs connus</span></td>
+<td>24%</td><td>22%</td>
+<td>3.50</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Brian Kelly<span class="det">Centre · 137 matchs connus</span></td>
+<td>20%</td><td>32%</td>
+<td>2.50</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ronald Volkman<span class="det">Demi · 21 matchs connus</span></td>
+<td>20%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='perte'>-11%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tallyn Da Silva<span class="det">Remplaçant · 48 matchs connus</span></td>
+<td>17%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kelma Tuilagi<span class="det">2e ligne · 81 matchs connus</span></td>
+<td>14%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-31%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joash Papalii<span class="det">Arrière · 24 matchs connus · titulaire incertain</span></td>
+<td>13%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='perte'>-40%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Kitione Kautoga<span class="det">2e ligne · 32 matchs connus</span></td>
+<td>13%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-22%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sean Russell<span class="det">Centre · 75 matchs connus</span></td>
+<td>12%</td><td>24%</td>
+<td>3.25</td>
+<td><span class='perte'>-60%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Williams<span class="det">Remplaçant · 130 matchs connus</span></td>
+<td>10%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-40%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jezaiah Funa-Iuta<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Toni Mataele<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='gain'>+15%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Will Penisini<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mitchell Moses<span class="det">Demi · 121 matchs connus · titulaire incertain</span></td>
+<td>8%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='perte'>-65%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Tuivaiti<span class="det">Remplaçant · 22 matchs connus</span></td>
+<td>6%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Teancum Brown<span class="det">Remplaçant · 7 matchs connus</span></td>
+<td>5%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-52%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack De Belin<span class="det">Troisième ligne · 114 matchs connus</span></td>
+<td>5%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Luca Moretti<span class="det">Remplaçant · 40 matchs connus</span></td>
+<td>4%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-57%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ryley Smith<span class="det">Talonneur · 30 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-69%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Saxon Pryke<span class="det">Remplaçant · 4 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Junior Paulo<span class="det">Pilier · 140 matchs connus · titulaire incertain</span></td>
+<td>1%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-92%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sun 09/08 à 06h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Canberra Raiders<span class='contre'>—</span>Newcastle Knights</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>8.0</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>8.2</dd></div><div class='ch'><dt>Canberra Raiders</dt><dd>4.0</dd></div><div class='ch'><dt>Newcastle Knights</dt><dd>4.0</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 7 · plus de 7.5 essais : 55%</p>
+<div class="barres"><div class='barre' style='height:8%' title='2 essais : 1%'></div><div class='barre' style='height:21%' title='3 essais : 3%'></div><div class='barre' style='height:41%' title='4 essais : 6%'></div><div class='barre' style='height:66%' title='5 essais : 9%'></div><div class='barre' style='height:88%' title='6 essais : 12%'></div><div class='barre pivot' style='height:100%' title='7 essais : 14%'></div><div class='barre dedans' style='height:100%' title='8 essais : 14%'></div><div class='barre dedans' style='height:89%' title='9 essais : 12%'></div><div class='barre dedans' style='height:71%' title='10 essais : 10%'></div><div class='barre dedans' style='height:52%' title='11 essais : 7%'></div><div class='barre dedans' style='height:34%' title='12 essais : 5%'></div><div class='barre dedans' style='height:21%' title='13 essais : 3%'></div><div class='barre dedans' style='height:12%' title='14 essais : 2%'></div><div class='barre dedans' style='height:6%' title='15 essais : 1%'></div></div>
+<div class="echelle"><span>2</span><span>15</span></div></div>
+<div class="marche">Canberra Raiders
+<span class="det">domicile · marché 4.0 essais · marge du book 38%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Xavier Savage<span class="det">Ailier · 81 matchs connus</span></td>
+<td>43%</td><td>42%</td>
+<td>1.90</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kaeo Weekes<span class="det">Arrière · 73 matchs connus</span></td>
+<td>36%</td><td>36%</td>
+<td>2.20</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jed Stuart<span class="det">Ailier · 23 matchs connus</span></td>
+<td>29%</td><td>37%</td>
+<td>2.10</td>
+<td><span class='perte'>-38%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ethan Strange<span class="det">Demi · 63 matchs connus</span></td>
+<td>29%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-14%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matthew Timoko<span class="det">Centre · 126 matchs connus</span></td>
+<td>28%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Daine Laurie<span class="det">Arrière · 86 matchs connus</span></td>
+<td>27%</td><td>19%</td>
+<td>4.00</td>
+<td><span class='gain'>+10%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Zac Hosking<span class="det">2e ligne · 68 matchs connus</span></td>
+<td>18%</td><td>19%</td>
+<td>4.00</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Savelio Tamale<span class="det">Ailier · 33 matchs connus · titulaire incertain</span></td>
+<td>17%</td><td>40%</td>
+<td>2.00</td>
+<td><span class='perte'>-66%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Ethan Sanders<span class="det">Demi · 24 matchs connus</span></td>
+<td>15%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Coby Black<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>12%</td><td>17%</td>
+<td>4.50</td>
+<td><span class='perte'>-44%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mark Tuialii<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>12%</td><td>22%</td>
+<td>3.50</td>
+<td><span class='perte'>-56%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Simi Sasagi<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>12%</td><td>31%</td>
+<td>2.50</td>
+<td><span class='perte'>-69%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Starling<span class="det">Talonneur · 140 matchs connus</span></td>
+<td>9%</td><td>11%</td>
+<td>7.00</td>
+<td><span class='perte'>-36%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Owen Pattie<span class="det">Remplaçant · 32 matchs connus</span></td>
+<td>9%</td><td>12%</td>
+<td>6.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matty Nicholson<span class="det">2e ligne · 58 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>12%</td>
+<td>6.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Corey Horsburgh<span class="det">Troisième ligne · 108 matchs connus</span></td>
+<td>8%</td><td>7%</td>
+<td>10.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joe Roddy<span class="det">Remplaçant · 4 matchs connus · titulaire incertain</span></td>
+<td>8%</td><td>12%</td>
+<td>6.00</td>
+<td><span class='perte'>-52%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joseph Tapine<span class="det">Pilier · 156 matchs connus</span></td>
+<td>7%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-33%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh Papalii<span class="det">Pilier · 141 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>7%</td>
+<td>10.00</td>
+<td><span class='perte'>-53%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ata Mariota<span class="det">Remplaçant · 79 matchs connus</span></td>
+<td>5%</td><td>12%</td>
+<td>6.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Morgan Smithies<span class="det">Troisième ligne · 155 matchs connus</span></td>
+<td>2%</td><td>7%</td>
+<td>10.00</td>
+<td><span class='perte'>-77%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Vena Patuki-Case<span class="det">Remplaçant · 1 matchs connus · titulaire incertain</span></td>
+<td>1%</td><td>12%</td>
+<td>6.00</td>
+<td><span class='perte'>-94%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Newcastle Knights
+<span class="det">extérieur · marché 4.0 essais · marge du book 21%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr class='pivot'><td>Fletcher Sharpe<span class="det">Demi · 44 matchs connus</span></td>
+<td>40%</td><td>30%</td>
+<td>2.85</td>
+<td><span class='gain'>+14%</span></td>
+<td><span class="marque oui">pari conseillé</span></td></tr><tr><td>Bradman Best<span class="det">Centre · 115 matchs connus</span></td>
+<td>34%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-7%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Fletcher Hunt<span class="det">Centre · 23 matchs connus · titulaire incertain</span></td>
+<td>24%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kalyn Ponga<span class="det">Arrière · 108 matchs connus</span></td>
+<td>24%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-34%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kyle McCarthy<span class="det">Centre · 6 matchs connus</span></td>
+<td>21%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Dane Gagai<span class="det">Centre · 149 matchs connus</span></td>
+<td>21%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Diesel Hagan<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>8%</td>
+<td>10.00</td>
+<td><span class='gain'>+51%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Dominic Young<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>46%</td>
+<td>1.90</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Greg Marzhew<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>46%</td>
+<td>1.90</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Crouch<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='gain'>+13%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Mat Croker<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>8%</td>
+<td>10.00</td>
+<td><span class='gain'>+51%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Toby Winter<span class="det">0 matchs connus</span></td>
+<td>15%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-43%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyson Frizell<span class="det">2e ligne · 140 matchs connus</span></td>
+<td>15%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='gain'>+64%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Francis Manuleleua<span class="det">Remplaçant · 8 matchs connus</span></td>
+<td>11%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-46%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Trey Mooney<span class="det">Pilier · 40 matchs connus</span></td>
+<td>11%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sandon Smith<span class="det">Demi · 64 matchs connus</span></td>
+<td>10%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-48%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jermaine McEwen<span class="det">2e ligne · 31 matchs connus</span></td>
+<td>10%</td><td>17%</td>
+<td>5.00</td>
+<td><span class='perte'>-50%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Phoenix Crossland<span class="det">Talonneur · 123 matchs connus</span></td>
+<td>10%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-26%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Harrison Graham<span class="det">Remplaçant · 22 matchs connus</span></td>
+<td>9%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cody Hopwood<span class="det">Remplaçant · 10 matchs connus</span></td>
+<td>8%</td><td>14%</td>
+<td>6.00</td>
+<td><span class='perte'>-50%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Thomas Cant<span class="det">Remplaçant · 31 matchs connus</span></td>
+<td>7%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-75%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Brodie Jones<span class="det">Remplaçant · 82 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sun 09/08 à 08h05 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">St. George Illawarra Dragons<span class='contre'>—</span>Cronulla Sharks</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus</dt><dd>9.0</dd></div><div class='ch'><dt>estimation du modèle</dt><dd>8.1</dd></div><div class='ch'><dt>St. George Illawarra Dragons</dt><dd>3.3</dd></div><div class='ch'><dt>Cronulla Sharks</dt><dd>5.8</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 9 · plus de 8.5 essais : 55%</p>
+<div class="barres"><div class='barre' style='height:11%' title='3 essais : 1%'></div><div class='barre' style='height:25%' title='4 essais : 3%'></div><div class='barre' style='height:45%' title='5 essais : 6%'></div><div class='barre' style='height:68%' title='6 essais : 9%'></div><div class='barre' style='height:88%' title='7 essais : 12%'></div><div class='barre' style='height:100%' title='8 essais : 13%'></div><div class='barre dedans pivot' style='height:100%' title='9 essais : 13%'></div><div class='barre dedans' style='height:90%' title='10 essais : 12%'></div><div class='barre dedans' style='height:74%' title='11 essais : 10%'></div><div class='barre dedans' style='height:56%' title='12 essais : 7%'></div><div class='barre dedans' style='height:39%' title='13 essais : 5%'></div><div class='barre dedans' style='height:25%' title='14 essais : 3%'></div><div class='barre dedans' style='height:15%' title='15 essais : 2%'></div><div class='barre dedans' style='height:9%' title='16 essais : 1%'></div><div class='barre dedans' style='height:5%' title='17 essais : 1%'></div></div>
+<div class="echelle"><span>3</span><span>17</span></div></div>
+<div class="marche">St. George Illawarra Dragons
+<span class="det">domicile · marché 3.3 essais · marge du book 34%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Setu Tu<span class="det">Ailier · 17 matchs connus</span></td>
+<td>38%</td><td>36%</td>
+<td>2.25</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyrell Sloan<span class="det">Arrière · 91 matchs connus</span></td>
+<td>29%</td><td>36%</td>
+<td>2.20</td>
+<td><span class='perte'>-36%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Valentine Holmes<span class="det">Centre · 131 matchs connus</span></td>
+<td>28%</td><td>26%</td>
+<td>3.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Clinton Gutherson<span class="det">Arrière · 159 matchs connus</span></td>
+<td>25%</td><td>21%</td>
+<td>3.75</td>
+<td><span class='perte'>-5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mathew Feagai<span class="det">Ailier · 76 matchs connus</span></td>
+<td>25%</td><td>30%</td>
+<td>2.60</td>
+<td><span class='perte'>-35%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Christian Tuipulotu<span class="det">Ailier · 61 matchs connus · titulaire incertain</span></td>
+<td>23%</td><td>32%</td>
+<td>2.50</td>
+<td><span class='perte'>-43%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Dylan Egan<span class="det">2e ligne · 17 matchs connus</span></td>
+<td>15%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kyle Flanagan<span class="det">Demi · 128 matchs connus</span></td>
+<td>14%</td><td>12%</td>
+<td>6.50</td>
+<td><span class='perte'>-8%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Daniel Atkinson<span class="det">Demi · 50 matchs connus</span></td>
+<td>12%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-28%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Hamish Stewart<span class="det">2e ligne · 32 matchs connus</span></td>
+<td>12%</td><td>15%</td>
+<td>5.00</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jacob Liddle<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>12%</td>
+<td>6.50</td>
+<td><span class='perte'>-43%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jacob Webster<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lyhkan King-Togia<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ryan Hutchinson<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='gain'>+15%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Damien Cook<span class="det">Talonneur · 157 matchs connus</span></td>
+<td>8%</td><td>14%</td>
+<td>5.50</td>
+<td><span class='perte'>-54%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Moses Suli<span class="det">Centre · 115 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>22%</td>
+<td>3.60</td>
+<td><span class='perte'>-81%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ryan Couchman<span class="det">Troisième ligne · 27 matchs connus</span></td>
+<td>5%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Luciano Leilua<span class="det">2e ligne · 128 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Loko Pasifiki Tonga<span class="det">Pilier · 21 matchs connus</span></td>
+<td>4%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-48%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh Kerr<span class="det">Remplaçant · 115 matchs connus</span></td>
+<td>3%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-65%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jacob Halangahu<span class="det">Remplaçant · 11 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>8%</td>
+<td>9.00</td>
+<td><span class='perte'>-77%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Emre Guler<span class="det">Remplaçant · 104 matchs connus · titulaire incertain</span></td>
+<td>2%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Cronulla Sharks
+<span class="det">extérieur · marché 5.8 essais · marge du book 22%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Ronaldo Mulitalo<span class="det">Ailier · 138 matchs connus</span></td>
+<td>63%</td><td>59%</td>
+<td>1.50</td>
+<td><span class='perte'>-6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sione Katoa<span class="det">Ailier · 150 matchs connus</span></td>
+<td>55%</td><td>57%</td>
+<td>1.55</td>
+<td><span class='perte'>-14%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>William Kennedy<span class="det">Arrière · 151 matchs connus</span></td>
+<td>38%</td><td>39%</td>
+<td>2.20</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jesse Ramien<span class="det">Centre · 145 matchs connus</span></td>
+<td>30%</td><td>36%</td>
+<td>2.40</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Nicho Hynes<span class="det">Demi · 141 matchs connus</span></td>
+<td>28%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Teig Wilton<span class="det">2e ligne · 121 matchs connus</span></td>
+<td>27%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Briton Nikora<span class="det">2e ligne · 149 matchs connus</span></td>
+<td>26%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Billy Burns<span class="det">2e ligne · 77 matchs connus</span></td>
+<td>22%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-10%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 14 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Braydon Trindall<span class="det">0 matchs connus</span></td>
+<td>19%</td><td>34%</td>
+<td>2.50</td>
+<td><span class='perte'>-53%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Michael Gabrael<span class="det">0 matchs connus</span></td>
+<td>19%</td><td>34%</td>
+<td>2.50</td>
+<td><span class='perte'>-53%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tuku Hau Tapuha<span class="det">0 matchs connus</span></td>
+<td>19%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='gain'>+41%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Thomas Hazelton<span class="det">Remplaçant · 71 matchs connus</span></td>
+<td>18%</td><td>22%</td>
+<td>3.75</td>
+<td><span class='perte'>-31%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Addin Fonua-Blake<span class="det">Pilier · 143 matchs connus</span></td>
+<td>15%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jesse Colquhoun<span class="det">Remplaçant · 40 matchs connus</span></td>
+<td>15%</td><td>14%</td>
+<td>6.00</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mawene Hiroti<span class="det">Centre · 35 matchs connus · titulaire incertain</span></td>
+<td>13%</td><td>36%</td>
+<td>2.40</td>
+<td><span class='perte'>-68%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Blayke Brailey<span class="det">Talonneur · 164 matchs connus</span></td>
+<td>11%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-41%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Hohepa Puru<span class="det">Remplaçant · 11 matchs connus</span></td>
+<td>11%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Samuel Stonestreet<span class="det">Ailier · 28 matchs connus · titulaire incertain</span></td>
+<td>11%</td><td>55%</td>
+<td>1.60</td>
+<td><span class='perte'>-83%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Niwhai Puru<span class="det">Demi · 3 matchs connus · titulaire incertain</span></td>
+<td>11%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-63%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cameron McInnes<span class="det">Troisième ligne · 124 matchs connus</span></td>
+<td>10%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Braden Uele<span class="det">Remplaçant · 108 matchs connus</span></td>
+<td>9%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-32%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Oregon Kaufusi<span class="det">Pilier · 136 matchs connus</span></td>
+<td>4%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-69%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article></div><div class='groupe-matchs' id='g1' hidden><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">Super League</span>
+Fri 07/08 à 21h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Castleford Tigers<span class='contre'>—</span>Hull Kingston Rovers</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus (modèle)</dt><dd>8.4</dd></div><div class='ch'><dt>Castleford Tigers</dt><dd>2.3</dd></div><div class='ch'><dt>Hull Kingston Rovers</dt><dd>6.2</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 8</p>
+<div class="barres"><div class='barre' style='height:16%' title='3 essais : 2%'></div><div class='barre' style='height:33%' title='4 essais : 5%'></div><div class='barre' style='height:56%' title='5 essais : 8%'></div><div class='barre' style='height:79%' title='6 essais : 11%'></div><div class='barre' style='height:95%' title='7 essais : 13%'></div><div class='barre pivot' style='height:100%' title='8 essais : 14%'></div><div class='barre' style='height:94%' title='9 essais : 13%'></div><div class='barre' style='height:79%' title='10 essais : 11%'></div><div class='barre' style='height:60%' title='11 essais : 8%'></div><div class='barre' style='height:42%' title='12 essais : 6%'></div><div class='barre' style='height:28%' title='13 essais : 4%'></div><div class='barre' style='height:17%' title='14 essais : 2%'></div><div class='barre' style='height:9%' title='15 essais : 1%'></div><div class='barre' style='height:5%' title='16 essais : 1%'></div></div>
+<div class="echelle"><span>3</span><span>16</span></div></div>
+<div class="marche">Castleford Tigers
+<span class="det">domicile · modèle 2.3 essais · marge du book 21%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Krystian Mapapalangi<span class="det">Remplaçant · 24 matchs connus</span></td>
+<td>26%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-23%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Louis Senior<span class="det">Remplaçant · 80 matchs connus</span></td>
+<td>18%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-45%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Fletcher Rooney<span class="det">12 matchs connus</span></td>
+<td>18%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-37%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Phoenix Laulu-Togagae<span class="det">23 matchs connus</span></td>
+<td>14%</td><td>19%</td>
+<td>4.50</td>
+<td><span class='perte'>-35%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Daejarn Asi<span class="det">Demi · 88 matchs connus</span></td>
+<td>14%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='gain'>+20%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Alfie Salmon<span class="det">0 matchs connus</span></td>
+<td>12%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='gain'>+36%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Corey Sharpe<span class="det">0 matchs connus</span></td>
+<td>12%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='gain'>+5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Alex Mellor<span class="det">2e ligne · 157 matchs connus</span></td>
+<td>12%</td><td>19%</td>
+<td>4.50</td>
+<td><span class='perte'>-47%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>George Lawler<span class="det">Pilier · 147 matchs connus</span></td>
+<td>10%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='gain'>+13%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Liam Hood<span class="det">Talonneur · 91 matchs connus</span></td>
+<td>9%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>George Hirst<span class="det">12 matchs connus</span></td>
+<td>8%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-9%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Renouf Atoni<span class="det">Remplaçant · 77 matchs connus</span></td>
+<td>8%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='gain'>+4%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jordan Lane<span class="det">2e ligne · 139 matchs connus</span></td>
+<td>6%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyler Dupree<span class="det">Remplaçant · 93 matchs connus</span></td>
+<td>6%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Brown<span class="det">Remplaçant · 84 matchs connus</span></td>
+<td>6%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joe Stimson<span class="det">Remplaçant · 88 matchs connus</span></td>
+<td>6%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tylor Sharpe<span class="det">1 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-85%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Ashworth<span class="det">Remplaçant · 69 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-45%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Hall<span class="det">Remplaçant · 49 matchs connus</span></td>
+<td>5%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-36%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cain Robb<span class="det">Remplaçant · 48 matchs connus</span></td>
+<td>4%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='perte'>-44%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jenson Windley<span class="det">9 matchs connus · titulaire incertain</span></td>
+<td>4%</td><td>15%</td>
+<td>5.50</td>
+<td><span class='perte'>-78%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Hull Kingston Rovers
+<span class="det">extérieur · modèle 6.2 essais · marge du book 13%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Joe Burgess<span class="det">Ailier · 137 matchs connus</span></td>
+<td>61%</td><td>62%</td>
+<td>1.50</td>
+<td><span class='perte'>-9%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Davies<span class="det">Ailier · 154 matchs connus</span></td>
+<td>54%</td><td>56%</td>
+<td>1.65</td>
+<td><span class='perte'>-10%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Rhyse Martin<span class="det">Remplaçant · 150 matchs connus</span></td>
+<td>39%</td><td>21%</td>
+<td>4.25</td>
+<td><span class='gain'>+66%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Jack Broadbent<span class="det">Remplaçant · 113 matchs connus</span></td>
+<td>38%</td><td>50%</td>
+<td>1.85</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Oliver Gildart<span class="det">Centre · 115 matchs connus</span></td>
+<td>35%</td><td>36%</td>
+<td>2.50</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Peta Hiku<span class="det">Centre · 151 matchs connus</span></td>
+<td>32%</td><td>36%</td>
+<td>2.50</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyrone May<span class="det">Demi · 147 matchs connus</span></td>
+<td>26%</td><td>21%</td>
+<td>4.25</td>
+<td><span class='gain'>+9%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jai Whitbread<span class="det">Remplaçant · 118 matchs connus</span></td>
+<td>24%</td><td>22%</td>
+<td>4.00</td>
+<td><span class='perte'>-5%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>James Batchelor<span class="det">2e ligne · 146 matchs connus</span></td>
+<td>24%</td><td>28%</td>
+<td>3.25</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jez Litten<span class="det">Talonneur · 134 matchs connus</span></td>
+<td>22%</td><td>28%</td>
+<td>3.25</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Elliot Minchella<span class="det">0 matchs connus</span></td>
+<td>22%</td><td>15%</td>
+<td>6.00</td>
+<td><span class='gain'>+30%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Ryan Hampshire<span class="det">Arrière · 73 matchs connus · titulaire incertain</span></td>
+<td>21%</td><td>21%</td>
+<td>4.25</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Amone<span class="det">Pilier · 89 matchs connus</span></td>
+<td>20%</td><td>21%</td>
+<td>4.25</td>
+<td><span class='perte'>-17%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Noah Booth<span class="det">Remplaçant · 11 matchs connus · titulaire incertain</span></td>
+<td>15%</td><td>46%</td>
+<td>2.00</td>
+<td><span class='perte'>-69%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Karl Lawton<span class="det">Remplaçant · 93 matchs connus</span></td>
+<td>14%</td><td>26%</td>
+<td>3.50</td>
+<td><span class='perte'>-51%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Dean Hadley<span class="det">2e ligne · 139 matchs connus</span></td>
+<td>13%</td><td>19%</td>
+<td>4.75</td>
+<td><span class='perte'>-36%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Charles<span class="det">Demi · 21 matchs connus</span></td>
+<td>12%</td><td>19%</td>
+<td>4.75</td>
+<td><span class='perte'>-43%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sauaso Sue<span class="det">Pilier · 124 matchs connus</span></td>
+<td>10%</td><td>19%</td>
+<td>4.75</td>
+<td><span class='perte'>-54%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jordan Dezaria<span class="det">Remplaçant · 78 matchs connus</span></td>
+<td>8%</td><td>12%</td>
+<td>7.50</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Bill Leyland<span class="det">Remplaçant · 18 matchs connus · titulaire incertain</span></td>
+<td>6%</td><td>19%</td>
+<td>4.75</td>
+<td><span class='perte'>-73%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Luckley<span class="det">Remplaçant · 88 matchs connus</span></td>
+<td>5%</td><td>15%</td>
+<td>6.00</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">Super League</span>
+Fri 07/08 à 21h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Wakefield Trinity<span class='contre'>—</span>Leeds Rhinos</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus (modèle)</dt><dd>7.1</dd></div><div class='ch'><dt>Wakefield Trinity</dt><dd>3.4</dd></div><div class='ch'><dt>Leeds Rhinos</dt><dd>3.7</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 7</p>
+<div class="barres"><div class='barre' style='height:14%' title='2 essais : 2%'></div><div class='barre' style='height:34%' title='3 essais : 5%'></div><div class='barre' style='height:60%' title='4 essais : 9%'></div><div class='barre' style='height:84%' title='5 essais : 13%'></div><div class='barre' style='height:99%' title='6 essais : 15%'></div><div class='barre pivot' style='height:100%' title='7 essais : 15%'></div><div class='barre' style='height:88%' title='8 essais : 13%'></div><div class='barre' style='height:69%' title='9 essais : 10%'></div><div class='barre' style='height:49%' title='10 essais : 7%'></div><div class='barre' style='height:31%' title='11 essais : 5%'></div><div class='barre' style='height:18%' title='12 essais : 3%'></div><div class='barre' style='height:10%' title='13 essais : 1%'></div><div class='barre' style='height:5%' title='14 essais : 1%'></div></div>
+<div class="echelle"><span>2</span><span>14</span></div></div>
+<div class="marche">Wakefield Trinity
+<span class="det">domicile · modèle 3.4 essais · marge du book 23%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Tom Johnstone<span class="det">Ailier · 118 matchs connus</span></td>
+<td>44%</td><td>41%</td>
+<td>2.10</td>
+<td><span class='perte'>-8%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Josh Rourke<span class="det">Remplaçant · 42 matchs connus</span></td>
+<td>26%</td><td>28%</td>
+<td>3.00</td>
+<td><span class='perte'>-22%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Will Tate<span class="det">Remplaçant · 38 matchs connus</span></td>
+<td>25%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Walmsley<span class="det">Remplaçant · 21 matchs connus</span></td>
+<td>23%</td><td>34%</td>
+<td>2.50</td>
+<td><span class='perte'>-42%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Max Jowitt<span class="det">Arrière · 97 matchs connus</span></td>
+<td>22%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Caius Faatili<span class="det">Remplaçant · 30 matchs connus</span></td>
+<td>20%</td><td>21%</td>
+<td>4.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Caleb Hamlin-Uele<span class="det">Remplaçant · 24 matchs connus</span></td>
+<td>14%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='gain'>+28%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Cam Scott<span class="det">0 matchs connus</span></td>
+<td>13%</td><td>24%</td>
+<td>3.50</td>
+<td><span class='perte'>-54%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Jake Trueman<span class="det">0 matchs connus</span></td>
+<td>13%</td><td>14%</td>
+<td>6.00</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matty Storton<span class="det">0 matchs connus</span></td>
+<td>13%</td><td>14%</td>
+<td>6.00</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Isaiah Vagana<span class="det">Remplaçant · 33 matchs connus</span></td>
+<td>11%</td><td>14%</td>
+<td>6.00</td>
+<td><span class='perte'>-32%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Sinfield<span class="det">Remplaçant · 37 matchs connus</span></td>
+<td>10%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-22%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mike McMeeken<span class="det">Pilier · 153 matchs connus</span></td>
+<td>10%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jayden Myers<span class="det">Remplaçant · 17 matchs connus · titulaire incertain</span></td>
+<td>9%</td><td>31%</td>
+<td>2.75</td>
+<td><span class='perte'>-75%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jazz Tevaga<span class="det">Remplaçant · 116 matchs connus</span></td>
+<td>9%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jay Pitts<span class="det">Remplaçant · 147 matchs connus</span></td>
+<td>8%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-28%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tyson Smoothy<span class="det">Remplaçant · 58 matchs connus</span></td>
+<td>7%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-45%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Corey Hall<span class="det">Centre · 86 matchs connus · titulaire incertain</span></td>
+<td>6%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-74%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Harvey Smith<span class="det">Remplaçant · 28 matchs connus</span></td>
+<td>5%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-62%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ky Rodwell<span class="det">Pilier · 26 matchs connus</span></td>
+<td>4%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-62%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tray Lolesio<span class="det">Remplaçant · 9 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-80%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">Leeds Rhinos
+<span class="det">extérieur · modèle 3.7 essais · marge du book 28%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Brodie Croft<span class="det">Demi · 146 matchs connus</span></td>
+<td>35%</td><td>35%</td>
+<td>2.35</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ash Handley<span class="det">Centre · 168 matchs connus</span></td>
+<td>31%</td><td>30%</td>
+<td>2.75</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Harry Newman<span class="det">Centre · 136 matchs connus</span></td>
+<td>28%</td><td>33%</td>
+<td>2.50</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ryan Hall<span class="det">Ailier · 142 matchs connus</span></td>
+<td>26%</td><td>35%</td>
+<td>2.35</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Miller<span class="det">Arrière · 12 matchs connus</span></td>
+<td>23%</td><td>23%</td>
+<td>3.50</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>James McDonnell<span class="det">2e ligne · 101 matchs connus</span></td>
+<td>23%</td><td>23%</td>
+<td>3.50</td>
+<td><span class='perte'>-21%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kallum Watkins<span class="det">2e ligne · 142 matchs connus</span></td>
+<td>16%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Alfie Edgell<span class="det">0 matchs connus</span></td>
+<td>16%</td><td>35%</td>
+<td>2.35</td>
+<td><span class='perte'>-62%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Fergie McCormack<span class="det">0 matchs connus</span></td>
+<td>16%</td><td>18%</td>
+<td>4.50</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Nicholson-Watton<span class="det">0 matchs connus</span></td>
+<td>16%</td><td>6%</td>
+<td>13.00</td>
+<td><span class='gain'>+112%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Jake Connor<span class="det">Demi · 156 matchs connus</span></td>
+<td>16%</td><td>16%</td>
+<td>5.00</td>
+<td><span class='perte'>-20%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Cameron Smith<span class="det">Remplaçant · 161 matchs connus</span></td>
+<td>13%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='gain'>+45%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Cooper Jenkins<span class="det">Remplaçant · 39 matchs connus</span></td>
+<td>12%</td><td>13%</td>
+<td>6.00</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Holroyd<span class="det">Pilier · 76 matchs connus</span></td>
+<td>10%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-10%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Bird<span class="det">Remplaçant · 94 matchs connus · titulaire incertain</span></td>
+<td>10%</td><td>22%</td>
+<td>3.75</td>
+<td><span class='perte'>-63%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Presley Cassell<span class="det">Remplaçant · 13 matchs connus</span></td>
+<td>9%</td><td>9%</td>
+<td>9.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jarrod OConnor<span class="det">Talonneur · 122 matchs connus</span></td>
+<td>8%</td><td>11%</td>
+<td>7.50</td>
+<td><span class='perte'>-39%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Mikolaj Oledzki<span class="det">Pilier · 149 matchs connus</span></td>
+<td>8%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-12%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Riley Lumb<span class="det">Remplaçant · 24 matchs connus · titulaire incertain</span></td>
+<td>7%</td><td>33%</td>
+<td>2.50</td>
+<td><span class='perte'>-81%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Chris Hankinson<span class="det">Remplaçant · 95 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>20%</td>
+<td>4.00</td>
+<td><span class='perte'>-80%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Zak Lloyd<span class="det">1 matchs connus · titulaire incertain</span></td>
+<td>1%</td><td>7%</td>
+<td>11.00</td>
+<td><span class='perte'>-86%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">Super League</span>
+Fri 07/08 à 21h00 · effectifs annoncés par le bookmaker</div>
+<h2 class="affiche">Leigh Leopards<span class='contre'>—</span>York Knights</h2></div>
+<dl class="chiffres"><div class='ch majeur'><dt>essais attendus (modèle)</dt><dd>8.6</dd></div><div class='ch'><dt>Leigh Leopards</dt><dd>5.9</dd></div><div class='ch'><dt>York Knights</dt><dd>2.7</dd></div></dl>
+<div class="distribution">
+<p class="dist-titre">Total d'essais attendu — sommet à 8</p>
+<div class="barres"><div class='barre' style='height:14%' title='3 essais : 2%'></div><div class='barre' style='height:31%' title='4 essais : 4%'></div><div class='barre' style='height:53%' title='5 essais : 7%'></div><div class='barre' style='height:76%' title='6 essais : 10%'></div><div class='barre' style='height:93%' title='7 essais : 13%'></div><div class='barre pivot' style='height:100%' title='8 essais : 14%'></div><div class='barre' style='height:95%' title='9 essais : 13%'></div><div class='barre' style='height:82%' title='10 essais : 11%'></div><div class='barre' style='height:64%' title='11 essais : 9%'></div><div class='barre' style='height:46%' title='12 essais : 6%'></div><div class='barre' style='height:30%' title='13 essais : 4%'></div><div class='barre' style='height:19%' title='14 essais : 3%'></div><div class='barre' style='height:11%' title='15 essais : 1%'></div><div class='barre' style='height:6%' title='16 essais : 1%'></div></div>
+<div class="echelle"><span>3</span><span>16</span></div></div>
+<div class="marche">Leigh Leopards
+<span class="det">domicile · modèle 5.9 essais · marge du book 17%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr><td>Josh Charnley<span class="det">Ailier · 156 matchs connus</span></td>
+<td>58%</td><td>61%</td>
+<td>1.50</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>David Armstrong<span class="det">Arrière · 28 matchs connus</span></td>
+<td>55%</td><td>54%</td>
+<td>1.67</td>
+<td><span class='perte'>-8%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Innes Senior<span class="det">Remplaçant · 137 matchs connus</span></td>
+<td>48%</td><td>52%</td>
+<td>1.75</td>
+<td><span class='perte'>-16%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Umyla Hanley<span class="det">Centre · 72 matchs connus</span></td>
+<td>44%</td><td>45%</td>
+<td>2.00</td>
+<td><span class='perte'>-13%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Lachlan Lam<span class="det">Demi · 132 matchs connus</span></td>
+<td>25%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-6%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Edwin Ipape<span class="det">Talonneur · 83 matchs connus</span></td>
+<td>25%</td><td>29%</td>
+<td>3.00</td>
+<td><span class='perte'>-25%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Will Brough<span class="det">1 matchs connus</span></td>
+<td>24%</td><td>29%</td>
+<td>3.00</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr class='pivot'><td>Liam Horne<span class="det">Remplaçant · 61 matchs connus</span></td>
+<td>23%</td><td>16%</td>
+<td>5.50</td>
+<td><span class='gain'>+27%</span></td>
+<td><span class="marque oui">pari conseillé</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Jacob Alick-Wiencke<span class="det">0 matchs connus</span></td>
+<td>20%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-24%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Robbie Mulhern<span class="det">0 matchs connus</span></td>
+<td>20%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='gain'>+42%</span></td>
+<td><span class="marque verifier">à vérifier</span></td></tr><tr><td>Adam Cook<span class="det">Demi · 29 matchs connus</span></td>
+<td>20%</td><td>22%</td>
+<td>4.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Joe Ofahengaue<span class="det">Remplaçant · 141 matchs connus</span></td>
+<td>20%</td><td>25%</td>
+<td>3.50</td>
+<td><span class='perte'>-30%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Gareth OBrien<span class="det">Demi · 118 matchs connus</span></td>
+<td>19%</td><td>25%</td>
+<td>3.50</td>
+<td><span class='perte'>-33%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matt Davis<span class="det">Remplaçant · 82 matchs connus</span></td>
+<td>14%</td><td>19%</td>
+<td>4.50</td>
+<td><span class='perte'>-38%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Owen Trout<span class="det">Pilier · 111 matchs connus</span></td>
+<td>13%</td><td>23%</td>
+<td>3.75</td>
+<td><span class='perte'>-51%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Hughes<span class="det">2e ligne · 138 matchs connus</span></td>
+<td>12%</td><td>22%</td>
+<td>4.00</td>
+<td><span class='perte'>-52%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Louis Brogan<span class="det">Remplaçant · 19 matchs connus</span></td>
+<td>11%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-10%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Isaac Liu<span class="det">Troisième ligne · 157 matchs connus</span></td>
+<td>7%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-50%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ryan Brown<span class="det">Remplaçant · 7 matchs connus</span></td>
+<td>6%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Andrew Badrock<span class="det">12 matchs connus · titulaire incertain</span></td>
+<td>5%</td><td>29%</td>
+<td>3.00</td>
+<td><span class='perte'>-86%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ben McNamara<span class="det">Remplaçant · 62 matchs connus · titulaire incertain</span></td>
+<td>3%</td><td>19%</td>
+<td>4.50</td>
+<td><span class='perte'>-88%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details><div class="marche">York Knights
+<span class="det">extérieur · modèle 2.7 essais · marge du book 18%</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>modèle</th><th>marché</th><th>cote</th>
+<th>avantage</th><th>verdict</th></tr></thead>
+<tbody><tr class='pivot'><td>Scott Galeano<span class="det">Ailier · 17 matchs connus</span></td>
+<td>34%</td><td>25%</td>
+<td>3.50</td>
+<td><span class='gain'>+20%</span></td>
+<td><span class="marque oui">pari conseillé</span></td></tr><tr><td>David Nofoaluma<span class="det">Ailier · 98 matchs connus</span></td>
+<td>31%</td><td>32%</td>
+<td>2.75</td>
+<td><span class='perte'>-15%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr class='pivot'><td>Cody Hunter<span class="det">14 matchs connus</span></td>
+<td>21%</td><td>16%</td>
+<td>5.50</td>
+<td><span class='gain'>+14%</span></td>
+<td><span class="marque oui">pari conseillé</span></td></tr><tr><td>Nikau Williams<span class="det">Remplaçant · 14 matchs connus</span></td>
+<td>20%</td><td>22%</td>
+<td>4.00</td>
+<td><span class='perte'>-18%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Oli Field<span class="det">Remplaçant · 19 matchs connus</span></td>
+<td>14%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-1%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Denive Balmforth<span class="det">Remplaçant · 47 matchs connus</span></td>
+<td>14%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-4%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Sam Wood<span class="det">Centre · 108 matchs connus</span></td>
+<td>13%</td><td>16%</td>
+<td>5.50</td>
+<td><span class='perte'>-28%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Tom Inman<span class="det">10 matchs connus</span></td>
+<td>11%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-3%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div><details><summary>voir les 13 autres joueurs</summary><div class='defilement'><table><tbody><tr><td>Toa Mata&#x27;afa<span class="det">Arrière · 17 matchs connus</span></td>
+<td>10%</td><td>16%</td>
+<td>5.50</td>
+<td><span class='perte'>-45%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Xavier Va&#x27;a<span class="det">Remplaçant · 22 matchs connus</span></td>
+<td>9%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-27%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Ata Hingano<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>8%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jon Bennison<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>8%</td><td>25%</td>
+<td>3.50</td>
+<td><span class='perte'>-71%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Matty Foster<span class="det">0 matchs connus · titulaire incertain</span></td>
+<td>8%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-29%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Paul Vaughan<span class="det">Pilier · 138 matchs connus</span></td>
+<td>8%</td><td>16%</td>
+<td>5.50</td>
+<td><span class='perte'>-55%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Justin Sangare<span class="det">Remplaçant · 86 matchs connus</span></td>
+<td>7%</td><td>8%</td>
+<td>11.00</td>
+<td><span class='perte'>-19%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jordan Thompson<span class="det">Troisième ligne · 31 matchs connus</span></td>
+<td>7%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-38%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Kieran Buchanan<span class="det">20 matchs connus · titulaire incertain</span></td>
+<td>6%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-49%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Will Dagger<span class="det">Demi · 59 matchs connus · titulaire incertain</span></td>
+<td>6%</td><td>19%</td>
+<td>4.50</td>
+<td><span class='perte'>-75%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Paul McShane<span class="det">Talonneur · 122 matchs connus</span></td>
+<td>4%</td><td>10%</td>
+<td>8.50</td>
+<td><span class='perte'>-65%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jack Martin<span class="det">Pilier · 19 matchs connus</span></td>
+<td>3%</td><td>5%</td>
+<td>17.00</td>
+<td><span class='perte'>-45%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr><tr><td>Jesse Dee<span class="det">2e ligne · 10 matchs connus · titulaire incertain</span></td>
+<td>2%</td><td>12%</td>
+<td>7.00</td>
+<td><span class='perte'>-88%</span></td>
+<td><span class="marque non">rien à prendre</span></td></tr></tbody></table></div></details>
+</article></div>
+<section class="bilan"><div class="bilan-tete">
+<h2>Journal des conseils</h2>
+<p>Chaque conseil est enregistré puis tranché sur le résultat réel. C'est la seule
+preuve que l'outil gagne ou perd de l'argent : aucun test contre des cotes passées
+n'est possible faute de source gratuite.</p></div>
+<dl class="synthese" style="border:none;border-radius:0">
+<div class="syn"><dt>tranchés</dt><dd>10</dd></div>
+<div class="syn"><dt>gagnés</dt><dd>3</dd></div>
+<div class="syn"><dt>réussite</dt><dd>30%<small> attendu 29%</small></dd></div>
+<div class="syn"><dt>rendement</dt><dd class='gain'>+2.5%</dd></div>
+<div class="syn"><dt>en attente</dt><dd>6<small> · 0 remboursés</small></dd></div>
+</dl><p class='rendement gain'><b>3</b> conseils gagnés sur 10, pour <b>2.9</b> attendus. Bilan : <b>+0.25</b> unité de mise. Sur 10 paris, ça ne prouve rien dans un sens ni dans l'autre — il en faut environ 100.</p><div class="pari">
+<span class="issue gagne">gagné</span>
+<span class="quoi-pari"><b>Jaxon Purdue</b> — Gold Coast Titans - North Queensland Cowboys</span>
+<span class="reel">cote 3.00 · annoncé 42%</span>
+</div><div class="pari">
+<span class="issue gagne">gagné</span>
+<span class="quoi-pari"><b>Jake Clifford</b> — Gold Coast Titans - North Queensland Cowboys</span>
+<span class="reel">cote 4.00 · annoncé 30%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Ronald Volkman</b> — Wests Tigers - Parramatta Eels</span>
+<span class="reel">cote 3.50 · annoncé 33%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Teig Wilton</b> — Cronulla Sharks - South Sydney Rabbitohs</span>
+<span class="reel">cote 3.40 · annoncé 32%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Billy Burns</b> — Cronulla Sharks - South Sydney Rabbitohs</span>
+<span class="reel">cote 4.00 · annoncé 30%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Thomas Hazelton</b> — Cronulla Sharks - South Sydney Rabbitohs</span>
+<span class="reel">cote 6.00 · annoncé 19%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Nicho Hynes</b> — Cronulla Sharks - South Sydney Rabbitohs</span>
+<span class="reel">cote 3.40 · annoncé 32%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Zac Lipowicz</b> — Catalans Dragons - Wakefield Trinity</span>
+<span class="reel">cote 5.50 · annoncé 20%</span>
+</div><div class="pari">
+<span class="issue gagne">gagné</span>
+<span class="quoi-pari"><b>Fletcher Sharpe</b> — Brisbane Broncos - Newcastle Knights</span>
+<span class="reel">cote 3.25 · annoncé 34%</span>
+</div><div class="pari">
+<span class="issue perdu">perdu</span>
+<span class="quoi-pari"><b>Freddy Lussick</b> — Penrith Panthers - Canberra Raiders</span>
+<span class="reel">cote 6.50 · annoncé 18%</span>
+</div></section>
+<footer>
+Les probabilités « modèle » valent <b>si le joueur entre en jeu</b> : c'est ainsi que se
+règlent ces paris, remboursés sinon.<br>
+La colonne « marché » est la cote débarrassée de la marge, ramenée au total d'essais que le
+bookmaker attend lui-même du match.<br>
+Modèle mesuré hors échantillon sur 33 304 prédictions, réentraînement mensuel : perte
+logarithmique 0,446 contre 0,496 pour une simple moyenne, biais 0,991. Calibré, pas devin —
+et jamais confronté à des cotes passées.<br>
+Un avantage affiché n'est pas un gain acquis. Mises plates et petites, jeu responsable.<br>
+<a href="https://github.com/Jejeh040/marqueurs-xiii">Code source</a>
+</footer>
+</div><script>
+  var racine = document.documentElement;
+  var bouton = document.getElementById('bascule');
+  var garde = null;
+  try { garde = localStorage.getItem('theme'); } catch (e) {}
+  if (garde) { racine.setAttribute('data-theme', garde); }
+  function libelle() {
+    var sombre = racine.getAttribute('data-theme') === 'dark'
+      || (!racine.getAttribute('data-theme')
+          && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    bouton.textContent = sombre ? 'Thème clair' : 'Thème sombre';
+    return sombre;
+  }
+  libelle();
+  bouton.addEventListener('click', function () {
+    var sombre = racine.getAttribute('data-theme') === 'dark'
+      || (!racine.getAttribute('data-theme')
+          && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var neuf = sombre ? 'light' : 'dark';
+    racine.setAttribute('data-theme', neuf);
+    try { localStorage.setItem('theme', neuf); } catch (e) {}
+    libelle();
+  });
+
+  document.querySelectorAll('.onglet').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.onglet').forEach(function (x) {
+        x.classList.remove('actif');
+      });
+      b.classList.add('actif');
+      document.querySelectorAll('.groupe-matchs').forEach(function (g) {
+        g.hidden = (g.id !== b.dataset.cible);
+      });
+    });
+  });
+</script></body></html>

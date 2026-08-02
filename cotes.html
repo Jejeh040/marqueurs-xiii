@@ -1,0 +1,1023 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Cotes marqueur d&#x27;essai — 08/08/2026 à 18h47</title>
+<style>
+:root{
+  --ground:#F5F8F6; --surface:#FFFFFF; --raised:#EEF3F0;
+  --ink:#101E1A; --ink-soft:#5D706A; --ink-faint:#8A9B95;
+  --line:#DFE7E2; --line-strong:#C6D3CD;
+  --accent:#0B6E63; --accent-wash:rgba(11,110,99,.08);
+  --over:#1A6B3C; --under:#8E4319; --warn:#7A5800; --danger:#8E2A2A;
+  --warn-wash:rgba(122,88,0,.10); --danger-wash:rgba(142,42,42,.10);
+  --radius:14px;
+  --font-display:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-data:"Cascadia Mono",ui-monospace,"SF Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0C1211; --surface:#141C1A; --raised:#1B2523;
+    --ink:#E9F0EC; --ink-soft:#9AACA5; --ink-faint:#6F817B;
+    --line:#222E2B; --line-strong:#33423E;
+    --accent:#4FD1C0; --accent-wash:rgba(79,209,192,.10);
+    --over:#5BC98C; --under:#EE9A5D; --warn:#E4B93F; --danger:#EE8B8B;
+    --warn-wash:rgba(228,185,63,.10); --danger-wash:rgba(238,139,139,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0C1211; --surface:#141C1A; --raised:#1B2523;
+  --ink:#E9F0EC; --ink-soft:#9AACA5; --ink-faint:#6F817B;
+  --line:#222E2B; --line-strong:#33423E;
+  --accent:#4FD1C0; --accent-wash:rgba(79,209,192,.10);
+  --over:#5BC98C; --under:#EE9A5D; --warn:#E4B93F; --danger:#EE8B8B;
+  --warn-wash:rgba(228,185,63,.10); --danger-wash:rgba(238,139,139,.10);
+}
+:root[data-theme="light"]{
+  --ground:#F5F8F6; --surface:#FFFFFF; --raised:#EEF3F0;
+  --ink:#101E1A; --ink-soft:#5D706A; --ink-faint:#8A9B95;
+  --line:#DFE7E2; --line-strong:#C6D3CD;
+  --accent:#0B6E63; --accent-wash:rgba(11,110,99,.08);
+  --over:#1A6B3C; --under:#8E4319; --warn:#7A5800; --danger:#8E2A2A;
+  --warn-wash:rgba(122,88,0,.10); --danger-wash:rgba(142,42,42,.10);
+}
+
+*{box-sizing:border-box}
+body{margin:0;padding:0;background:var(--ground);color:var(--ink);
+  font:400 16px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:32px 18px 72px;
+  display:flex;flex-direction:column;gap:22px}
+
+/* ---------- en-tete ---------- */
+.tete{display:flex;flex-direction:column;gap:6px}
+.eyebrow{margin:0;font:600 12px/1 var(--font-body);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font:700 clamp(28px,5vw,40px)/1.1 var(--font-display);
+  letter-spacing:-.02em;text-wrap:balance}
+.sous{margin:0;color:var(--ink-soft);font-size:14px}
+.barre-liens{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.lien{font:600 12.5px/1 var(--font-body);text-decoration:none;color:var(--ink-soft);
+  border:1px solid var(--line-strong);border-radius:999px;padding:7px 13px;
+  background:var(--surface)}
+.lien:hover{color:var(--ink);border-color:var(--ink-faint)}
+.lien.actif{background:var(--accent);border-color:var(--accent);color:var(--ground)}
+.bascule{appearance:none;cursor:pointer;margin-left:auto}
+
+/* ---------- archives ---------- */
+.archives{display:flex;gap:6px;flex-wrap:wrap}
+.archives a{font:600 11.5px/1 var(--font-data);text-decoration:none;padding:6px 10px;
+  border-radius:999px;background:var(--surface);border:1px solid var(--line);
+  color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.archives a:hover{border-color:var(--ink-faint);color:var(--ink)}
+.archives a.actif{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+/* ---------- barre de synthese ---------- */
+.synthese{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;margin:0;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.syn{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:3px}
+.syn dt{margin:0;font:600 11px/1 var(--font-body);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.syn dd{margin:0;font:600 20px/1.2 var(--font-data);font-variant-numeric:tabular-nums}
+.syn dd small{font:400 13px/1 var(--font-body);color:var(--ink-soft)}
+.syn dd.gain{color:var(--over)} .syn dd.perte{color:var(--under)}
+
+/* ---------- messages ---------- */
+.avis{border:1px solid var(--line);border-left-width:3px;border-radius:var(--radius);
+  background:var(--surface);padding:14px 16px;font-size:14px;
+  display:flex;flex-direction:column;gap:6px}
+.avis p{margin:0}
+.avis .titre{font-weight:650;color:var(--ink)}
+.avis.info{border-left-color:var(--accent)}
+.avis.attention{border-left-color:var(--warn);background:var(--warn-wash)}
+.avis.grave{border-left-color:var(--danger);background:var(--danger-wash)}
+
+/* ---------- onglets ---------- */
+.onglets{display:flex;gap:8px;border-bottom:2px solid var(--line)}
+.onglet{appearance:none;background:none;border:none;cursor:pointer;
+  font:650 15px/1 var(--font-display);color:var(--ink-faint);padding:12px 18px;
+  border-bottom:2px solid transparent;margin-bottom:-2px;
+  display:inline-flex;align-items:center;gap:8px}
+.onglet span{font:600 11px/1 var(--font-data);padding:3px 7px;border-radius:999px;
+  background:var(--raised);color:var(--ink-soft)}
+.onglet:hover{color:var(--ink-soft)}
+.onglet.actif{color:var(--accent);border-bottom-color:var(--accent)}
+.onglet.actif span{background:var(--accent);color:var(--ground)}
+.groupe-matchs{display:flex;flex-direction:column;gap:22px}
+.groupe-matchs[hidden]{display:none}
+
+/* ---------- carte de match ---------- */
+.match{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden}
+.match-tete{padding:18px 20px 16px;display:flex;flex-direction:column;gap:10px;
+  border-bottom:1px solid var(--line)}
+.contexte{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
+  font:500 12px/1 var(--font-body);color:var(--ink-soft)}
+.circuit{font:700 11px/1 var(--font-body);letter-spacing:.1em;color:var(--accent);
+  padding:3px 7px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+  border-radius:4px}
+.affiche{margin:0;font:650 clamp(19px,3.2vw,24px)/1.25 var(--font-display);
+  letter-spacing:-.01em;text-wrap:balance}
+.affiche .contre{color:var(--ink-faint);font-weight:400;padding:0 6px}
+
+/* ---------- chiffres cles ---------- */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));
+  gap:1px;background:var(--line);margin:0}
+.ch{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.ch dt{margin:0;font:600 10.5px/1.3 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.ch dd{margin:0;font:600 22px/1.15 var(--font-data);font-variant-numeric:tabular-nums}
+.ch.majeur dd{color:var(--accent);font-size:27px}
+
+/* ---------- distribution ---------- */
+.distribution{padding:16px 20px 12px;border-top:1px solid var(--line)}
+.dist-titre{margin:0 0 10px;font:600 10.5px/1 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.barres{display:flex;align-items:flex-end;gap:2px;height:64px}
+.barre{flex:1 1 0;background:var(--line-strong);border-radius:2px 2px 0 0;min-height:2px}
+.barre.dedans{background:var(--accent);opacity:.5}
+.barre.pivot{background:var(--accent);opacity:1}
+.echelle{display:flex;justify-content:space-between;margin-top:6px;
+  font:500 11px/1 var(--font-data);color:var(--ink-faint);font-variant-numeric:tabular-nums}
+
+/* ---------- tableaux ---------- */
+.marche{display:flex;align-items:center;gap:9px;padding:16px 20px 0;
+  font:650 13px/1 var(--font-display)}
+.marche::before{content:"";width:4px;height:15px;border-radius:2px;flex:none;
+  background:var(--accent)}
+.marche .det{font:500 11.5px/1 var(--font-body);color:var(--ink-soft);margin-left:auto}
+.defilement{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:9px 14px;text-align:right;border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
+th{font:600 11px/1.3 var(--font-body);letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-faint);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--font-data)}
+td:first-child{font-weight:650;font-family:var(--font-body)}
+tbody tr:last-child td{border-bottom:none}
+tr.pivot td{background:var(--accent-wash)}
+.det{display:block;font:400 11.5px/1.4 var(--font-body);color:var(--ink-faint)}
+.gain{color:var(--over);font-weight:650} .perte{color:var(--ink-faint)}
+.marque{display:inline-block;font:600 10px/1 var(--font-body);letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.marque.oui{background:var(--over);color:var(--ground)}
+.marque.verifier{background:var(--warn-wash);color:var(--warn);
+  border:1px solid color-mix(in srgb,var(--warn) 45%,transparent)}
+.marque.non{background:var(--raised);color:var(--ink-faint);border:1px solid var(--line-strong)}
+.marque.ecart{background:var(--danger-wash);color:var(--danger);
+  border:1px solid color-mix(in srgb,var(--danger) 45%,transparent)}
+summary{cursor:pointer;padding:12px 20px;font-size:13px;color:var(--ink-soft)}
+summary:hover{color:var(--ink)}
+.mode-emploi{margin:0;padding:12px 20px 18px;font-size:13px;color:var(--ink-soft);
+  border-top:1px solid var(--line);line-height:1.6}
+.mode-emploi b{color:var(--ink)}
+
+/* ---------- blocs ---------- */
+.bilan{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden}
+.bilan-tete{padding:16px 20px;border-bottom:1px solid var(--line)}
+.bilan-tete h2{margin:0 0 4px;font:650 18px/1.25 var(--font-display)}
+.bilan-tete p{margin:0;font-size:13px;color:var(--ink-soft)}
+.surs{border-color:color-mix(in srgb,var(--over) 45%,transparent)}
+.surs .bilan-tete{border-bottom-color:color-mix(in srgb,var(--over) 30%,transparent);
+  background:color-mix(in srgb,var(--over) 7%,transparent)}
+.surs h2{color:var(--over)}
+.sur{display:flex;align-items:center;gap:14px;padding:11px 20px;
+  border-bottom:1px solid var(--line);flex-wrap:wrap}
+.sur:last-child{border-bottom:none}
+.sur-proba{flex:none;width:52px;font:700 19px/1 var(--font-data);color:var(--over);
+  font-variant-numeric:tabular-nums}
+.sur-quoi{flex:1 1 190px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sur-quoi b{font:650 15px/1.2 var(--font-display)}
+.sur-quoi small,.sur-match small{font-size:11.5px;color:var(--ink-faint)}
+.sur-match{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:2px;
+  font-size:13px;color:var(--ink-soft)}
+.sur-cote{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  font:600 10.5px/1 var(--font-body);color:var(--ink-faint);text-transform:uppercase;
+  letter-spacing:.06em}
+.sur-cote b{font:650 16px/1 var(--font-data);color:var(--ink);text-transform:none}
+.pari{display:flex;align-items:baseline;gap:11px;padding:9px 20px;font-size:13px;
+  flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.pari:last-child{border-bottom:none}
+.issue{flex:none;width:66px;font:700 10px/1 var(--font-body);letter-spacing:.07em;
+  text-transform:uppercase}
+.issue.gagne{color:var(--over)} .issue.perdu{color:var(--under)}
+.issue.rembourse{color:var(--ink-faint)}
+.quoi-pari{flex:1 1 260px;min-width:0;color:var(--ink-soft)}
+.quoi-pari b{color:var(--ink)}
+.reel{flex:none;color:var(--ink-soft);font-family:var(--font-data);font-size:12.5px;
+  font-variant-numeric:tabular-nums}
+.rendement{margin:0;padding:13px 20px;font-size:13.5px;color:var(--ink-soft);
+  border-left:3px solid var(--line);border-top:1px solid var(--line);background:var(--surface)}
+.rendement b{color:var(--ink);font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.rendement.gain{border-left-color:var(--over)}
+.rendement.perte{border-left-color:var(--under)}
+.vide{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:38px 20px;text-align:center;color:var(--ink-soft)}
+.vide-journal{padding:26px 20px;text-align:center;color:var(--ink-soft);font-size:13.5px}
+footer{color:var(--ink-faint);font-size:12.5px;text-align:center;line-height:1.7;
+  border-top:1px solid var(--line);padding-top:20px}
+footer a{color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div class="wrap">
+<header class="tete">
+<p class="eyebrow">Rugby à XIII · NRL &amp; Super League</p>
+<h1>Toutes les cotes du moment</h1>
+<p class="sous">Relevé du 08/08/2026 à 18h47 · offre publique Kambi (Unibet) · toutes les compétitions cotées, modèle ou pas</p>
+<div class="barre-liens"><a class='lien' href='index.html'>Rapport du jour</a><a class='lien actif' href='cotes.html'>Toutes les cotes</a>
+<button class="lien bascule" id="bascule" type="button">Thème sombre</button></div>
+</header>
+<div class="avis info"><p class="titre">Les cotes brutes, sans modèle</p>
+<p>Cette page affiche simplement ce que le bookmaker propose, marge comprise, y compris sur
+les compétitions que le modèle ne couvre pas (NRL Women, faute de compositions publiées).
+La probabilité implicite est le simple inverse de la cote : elle contient la marge, elle
+surestime donc toujours un peu les chances réelles.</p></div>
+
+<article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">Super Ligue</span>
+Sat 08/08 à 19h30</div>
+<h2 class="affiche">Bradford Bulls<span class="contre">—</span>Warrington Wolves</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>8.7</dd></div><div class='ch'><dt>Warrington Wolves</dt><dd>5.6</dd></div><div class='ch'><dt>Bradford Bulls</dt><dd>2.9</dd></div></dl><div class="marche">Bradford Bulls
+<span class="det">20 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Connor Wynne</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Ethan Ryan</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Caleb Aekins</td>
+<td>3.75</td><td>27%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Luke Hooley</td>
+<td>3.75</td><td>27%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Jayden Nikorima</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Harvey Ward</td>
+<td>4.50</td><td>22%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Joe Mellor</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Thomas Doyle</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Zac Fulton</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Chris Atkin</td>
+<td>6.50</td><td>15%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Leon Ruan</td>
+<td>6.50</td><td>15%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Riley Dean</td>
+<td>6.50</td><td>15%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Andy Ackers</td>
+<td>8.00</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Eliot Peposhi</td>
+<td>8.00</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Jamie Gill</td>
+<td>8.00</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Will Gardiner</td>
+<td>8.00</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Alfie Leake</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Ebon Scurr</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Ryan Sutton</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Loghan Lewis</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr></tbody></table></div><div class="marche">Warrington Wolves
+<span class="det">21 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Matty Ashton</td>
+<td>1.50</td><td>67%</td>
+<td>7.00</td>
+<td>7.00</td></tr><tr><td>Josh Thewlis</td>
+<td>1.85</td><td>54%</td>
+<td>9.50</td>
+<td>9.50</td></tr><tr><td>Albert Hopoate</td>
+<td>2.00</td><td>50%</td>
+<td>10.00</td>
+<td>10.00</td></tr><tr><td>Lachlan Webster</td>
+<td>2.25</td><td>44%</td>
+<td>12.00</td>
+<td>12.00</td></tr><tr><td>Cai Taylor-Wray</td>
+<td>2.50</td><td>40%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Josh Smith</td>
+<td>2.50</td><td>40%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Toby King</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Kelepi Tanginoa</td>
+<td>3.50</td><td>29%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Adam Holroyd</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Ben Currie</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Danny Walker</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>James Harrison</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Ewan Irwin</td>
+<td>4.50</td><td>22%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>James Bentley</td>
+<td>4.50</td><td>22%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Toafofoa Sipley</td>
+<td>4.50</td><td>22%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Leon Hayes</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Sam Powell</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Joe Philbin</td>
+<td>6.00</td><td>17%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Jordy Crowther</td>
+<td>6.00</td><td>17%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Marc Sneyd</td>
+<td>6.00</td><td>17%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Liam Byrne</td>
+<td>8.50</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr></tbody></table></div></article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL (F)</span>
+Sun 09/08 à 03h35</div>
+<h2 class="affiche">Canberra Raiders (F)<span class="contre">—</span>Brisbane Broncos (F)</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>7.6</dd></div><div class='ch'><dt>Brisbane Broncos (W)</dt><dd>5.4</dd></div><div class='ch'><dt>Canberra Raiders (W)</dt><dd>2.3</dd></div></dl><div class="marche">Canberra Raiders (F)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Elise Simpson</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Mackenzie Wiki</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Isabella Waterman</td>
+<td>3.50</td><td>29%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Sheridan Gallagher</td>
+<td>3.50</td><td>29%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Leianne Tufuga</td>
+<td>3.75</td><td>27%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Jordyn Preston</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Simaima Taufa</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Charlotte Basham</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Krystal Blackwell</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Chanté Temara</td>
+<td>9.00</td><td>11%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Hollie-Mae Dodd</td>
+<td>9.00</td><td>11%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Zahara Temara</td>
+<td>9.00</td><td>11%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Chloe Saunders</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Grace Kemp</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Sophie Holyman</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Emma Barnes</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr><tr><td>Grace Kukutai</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr></tbody></table></div><div class="marche">Brisbane Broncos (F)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Tamika Upton</td>
+<td>1.45</td><td>69%</td>
+<td>6.00</td>
+<td>6.00</td></tr><tr><td>Kerri Johnson</td>
+<td>1.65</td><td>61%</td>
+<td>7.50</td>
+<td>7.50</td></tr><tr><td>Caitlin Urwin</td>
+<td>1.90</td><td>53%</td>
+<td>9.00</td>
+<td>9.00</td></tr><tr><td>Julia Robinson</td>
+<td>2.00</td><td>50%</td>
+<td>10.00</td>
+<td>10.00</td></tr><tr><td>Deleni Paitai</td>
+<td>2.50</td><td>40%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Georgia Bartlett</td>
+<td>3.25</td><td>31%</td>
+<td>19.00</td>
+<td>19.00</td></tr><tr><td>Lauren Dam</td>
+<td>3.50</td><td>29%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Jada Ferguson</td>
+<td>3.75</td><td>27%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Romy Teitzel</td>
+<td>3.75</td><td>27%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Bree Spreadborough</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Chelsea Lenarduzzi</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Jesse Southwell</td>
+<td>4.25</td><td>24%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Reegan Hicks</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Rhemy Hinckesman</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Brianna Clark</td>
+<td>6.50</td><td>15%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Shannon Mato</td>
+<td>6.50</td><td>15%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Lillian Yarrow</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr></tbody></table></div></article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL (F)</span>
+Sun 09/08 à 05h35</div>
+<h2 class="affiche">St. George Illawarra Dragons (F)<span class="contre">—</span>Wests Tigers (W)</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>7.5</dd></div><div class='ch'><dt>Wests Tigers (W)</dt><dd>4.7</dd></div><div class='ch'><dt>St. George Illawarra Dragons (W)</dt><dd>2.7</dd></div></dl><div class="marche">St. George Illawarra Dragons (F)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Teagan Berry</td>
+<td>2.00</td><td>50%</td>
+<td>10.00</td>
+<td>10.00</td></tr><tr><td>Jayme Millard</td>
+<td>2.75</td><td>36%</td>
+<td>14.00</td>
+<td>14.00</td></tr><tr><td>Maria Paseka</td>
+<td>2.75</td><td>36%</td>
+<td>14.00</td>
+<td>14.00</td></tr><tr><td>Shenae Ciesiolka</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Tahlia O&#x27;Brien</td>
+<td>4.25</td><td>24%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Ella Koster</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Taliah Fuimaono</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Charis Toli</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Kasey Reh</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Montana Clifford</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Brooke Anderson</td>
+<td>8.50</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Hannah Southwell</td>
+<td>8.50</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Zali Hopkins</td>
+<td>8.50</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Amelia Huakau</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Ruby-Jean Kennard-Ellis</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Ahlivia Ingram</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr><tr><td>Trinity Tauaneai</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr></tbody></table></div><div class="marche">Wests Tigers (W)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Emily Bass</td>
+<td>1.70</td><td>59%</td>
+<td>8.00</td>
+<td>8.00</td></tr><tr><td>Lily Rogan</td>
+<td>1.95</td><td>51%</td>
+<td>9.00</td>
+<td>9.00</td></tr><tr><td>Caitlin Turnbull</td>
+<td>2.10</td><td>48%</td>
+<td>10.00</td>
+<td>10.00</td></tr><tr><td>Namoe Gesa</td>
+<td>2.75</td><td>36%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Shenai Lendill</td>
+<td>3.00</td><td>33%</td>
+<td>17.00</td>
+<td>17.00</td></tr><tr><td>Kezie Apps</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Losana Lutu</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Portia Bourke</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Raecene McGregor</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Shaylee Bent</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Faythe Manera</td>
+<td>4.25</td><td>24%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Salma Nour</td>
+<td>4.25</td><td>24%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Sarah Togatuki</td>
+<td>4.25</td><td>24%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Christian Pio</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Shaniece Monschau</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Tara Reinke</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Tyla Amiatu</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr></tbody></table></div></article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sun 09/08 à 06h00</div>
+<h2 class="affiche">Canberra Raiders<span class="contre">—</span>Newcastle Knights</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>8.0</dd></div><div class='ch'><dt>Newcastle Knights</dt><dd>3.7</dd></div><div class='ch'><dt>Canberra Raiders</dt><dd>4.3</dd></div></dl><div class="marche">Canberra Raiders
+<span class="det">20 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Xavier Savage</td>
+<td>1.90</td><td>53%</td>
+<td>9.00</td>
+<td>9.00</td></tr><tr><td>Savelio Tamale</td>
+<td>2.00</td><td>50%</td>
+<td>9.50</td>
+<td>9.50</td></tr><tr><td>Jed Stuart</td>
+<td>2.10</td><td>48%</td>
+<td>10.00</td>
+<td>10.00</td></tr><tr><td>Kaeo Weekes</td>
+<td>2.20</td><td>45%</td>
+<td>11.00</td>
+<td>11.00</td></tr><tr><td>Simi Sasagi</td>
+<td>2.50</td><td>40%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Ethan Strange</td>
+<td>3.00</td><td>33%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Matthew Timoko</td>
+<td>3.00</td><td>33%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Daine Laurie</td>
+<td>4.00</td><td>25%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Zac Hosking</td>
+<td>4.00</td><td>25%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Coby Black</td>
+<td>4.50</td><td>22%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Ethan Sanders</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Ata Mariota</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Joe Roddy</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Matty Nicholson</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Owen Pattie</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Tom Starling</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Joseph Tapine</td>
+<td>9.00</td><td>11%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Corey Horsburgh</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Josh Papalii</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Morgan Smithies</td>
+<td>10.00</td><td>10%</td>
+<td>67.00</td>
+<td>67.00</td></tr></tbody></table></div><div class="marche">Newcastle Knights
+<span class="det">20 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Dominic Young</td>
+<td>1.90</td><td>53%</td>
+<td>9.00</td>
+<td>9.00</td></tr><tr><td>Greg Marzhew</td>
+<td>1.90</td><td>53%</td>
+<td>9.00</td>
+<td>9.00</td></tr><tr><td>Kalyn Ponga</td>
+<td>2.75</td><td>36%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Fletcher Hunt</td>
+<td>2.85</td><td>35%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Fletcher Sharpe</td>
+<td>2.85</td><td>35%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Thomas Cant</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Toby Winter</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Dane Gagai</td>
+<td>4.00</td><td>25%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Francis Manuleleua</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Jermaine McEwen</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Sandon Smith</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Cody Hopwood</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Harrison Graham</td>
+<td>7.50</td><td>13%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Lachlan Crouch</td>
+<td>7.50</td><td>13%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Phoenix Crossland</td>
+<td>7.50</td><td>13%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Trey Mooney</td>
+<td>7.50</td><td>13%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Diesel Hagan</td>
+<td>10.00</td><td>10%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Mat Croker</td>
+<td>10.00</td><td>10%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Brodie Jones</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Tyson Frizell</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr></tbody></table></div></article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL</span>
+Sun 09/08 à 08h05</div>
+<h2 class="affiche">St. George Illawarra Dragons<span class="contre">—</span>Cronulla Sharks</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>8.7</dd></div><div class='ch'><dt>Cronulla Sharks</dt><dd>5.8</dd></div><div class='ch'><dt>St. George Illawarra Dragons</dt><dd>2.8</dd></div></dl><div class="marche">St. George Illawarra Dragons
+<span class="det">20 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Tyrell Sloan</td>
+<td>2.20</td><td>45%</td>
+<td>12.00</td>
+<td>12.00</td></tr><tr><td>Setu Tu</td>
+<td>2.25</td><td>44%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Mathew Feagai</td>
+<td>2.60</td><td>38%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Valentine Holmes</td>
+<td>3.00</td><td>33%</td>
+<td>17.00</td>
+<td>17.00</td></tr><tr><td>Moses Suli</td>
+<td>3.60</td><td>28%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Clinton Gutherson</td>
+<td>3.75</td><td>27%</td>
+<td>23.00</td>
+<td>23.00</td></tr><tr><td>Dylan Egan</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Hamish Stewart</td>
+<td>5.00</td><td>20%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Damien Cook</td>
+<td>5.50</td><td>18%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Daniel Atkinson</td>
+<td>6.00</td><td>17%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Lyhkan King-Togia</td>
+<td>6.00</td><td>17%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Jacob Liddle</td>
+<td>6.50</td><td>15%</td>
+<td>46.00</td>
+<td>46.00</td></tr><tr><td>Kyle Flanagan</td>
+<td>6.50</td><td>15%</td>
+<td>46.00</td>
+<td>46.00</td></tr><tr><td>Jacob Halangahu</td>
+<td>9.00</td><td>11%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Emre Guler</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Jacob Webster</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Josh Kerr</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Luciano Leilua</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Ryan Couchman</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Loko Pasifiki Tonga</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr></tbody></table></div><div class="marche">Cronulla Sharks
+<span class="det">20 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Ronaldo Mulitalo</td>
+<td>1.50</td><td>67%</td>
+<td>6.00</td>
+<td>6.00</td></tr><tr><td>Sione Katoa</td>
+<td>1.55</td><td>65%</td>
+<td>6.50</td>
+<td>6.50</td></tr><tr><td>William Kennedy</td>
+<td>2.20</td><td>45%</td>
+<td>12.00</td>
+<td>12.00</td></tr><tr><td>Jesse Ramien</td>
+<td>2.40</td><td>42%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Mawene Hiroti</td>
+<td>2.40</td><td>42%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Braydon Trindall</td>
+<td>2.50</td><td>40%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Michael Gabrael</td>
+<td>2.50</td><td>40%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Briton Nikora</td>
+<td>2.75</td><td>36%</td>
+<td>17.00</td>
+<td>17.00</td></tr><tr><td>Nicho Hynes</td>
+<td>3.00</td><td>33%</td>
+<td>19.00</td>
+<td>19.00</td></tr><tr><td>Teig Wilton</td>
+<td>3.00</td><td>33%</td>
+<td>19.00</td>
+<td>19.00</td></tr><tr><td>Niwhai Puru</td>
+<td>3.50</td><td>29%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Thomas Hazelton</td>
+<td>3.75</td><td>27%</td>
+<td>21.00</td>
+<td>21.00</td></tr><tr><td>Billy Burns</td>
+<td>4.00</td><td>25%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Addin Fonua-Blake</td>
+<td>5.50</td><td>18%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Blayke Brailey</td>
+<td>5.50</td><td>18%</td>
+<td>31.00</td>
+<td>31.00</td></tr><tr><td>Jesse Colquhoun</td>
+<td>6.00</td><td>17%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Oregon Kaufusi</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Braden Uele</td>
+<td>7.50</td><td>13%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Cameron McInnes</td>
+<td>7.50</td><td>13%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Hohepa Puru</td>
+<td>7.50</td><td>13%</td>
+<td>51.00</td>
+<td>51.00</td></tr></tbody></table></div></article><article class="match">
+<div class="match-tete">
+<div class="contexte"><span class="circuit">NRL (F)</span>
+Sun 09/08 à 10h15</div>
+<h2 class="affiche">Sydney Roosters (F)<span class="contre">—</span>Parramatta Eels (F)</h2>
+</div><dl class="chiffres"><div class='ch majeur'><dt>total d&#x27;essais</dt><dd>8.9</dd></div><div class='ch'><dt>Parramatta Eels (W)</dt><dd>1.4</dd></div><div class='ch'><dt>Sydney Roosters (W)</dt><dd>7.6</dd></div></dl><div class="marche">Sydney Roosters (F)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Jayme Fressard</td>
+<td>1.35</td><td>74%</td>
+<td>6.50</td>
+<td>6.50</td></tr><tr><td>Brydie Parker</td>
+<td>1.45</td><td>69%</td>
+<td>7.50</td>
+<td>7.50</td></tr><tr><td>Jessica Sergis</td>
+<td>1.45</td><td>69%</td>
+<td>7.50</td>
+<td>7.50</td></tr><tr><td>Taina Naividi</td>
+<td>1.45</td><td>69%</td>
+<td>7.50</td>
+<td>7.50</td></tr><tr><td>Isabelle Kelly</td>
+<td>1.65</td><td>61%</td>
+<td>8.50</td>
+<td>8.50</td></tr><tr><td>Corban Baxter</td>
+<td>2.25</td><td>44%</td>
+<td>13.00</td>
+<td>13.00</td></tr><tr><td>Olivia Kernick</td>
+<td>2.35</td><td>43%</td>
+<td>14.00</td>
+<td>14.00</td></tr><tr><td>Sariah Paki</td>
+<td>2.50</td><td>40%</td>
+<td>15.00</td>
+<td>15.00</td></tr><tr><td>Jasmin Strange</td>
+<td>2.75</td><td>36%</td>
+<td>17.00</td>
+<td>17.00</td></tr><tr><td>Tarryn Aiken</td>
+<td>2.75</td><td>36%</td>
+<td>17.00</td>
+<td>17.00</td></tr><tr><td>Amber Hall</td>
+<td>3.50</td><td>29%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Jocelyn Kelleher</td>
+<td>3.50</td><td>29%</td>
+<td>26.00</td>
+<td>26.00</td></tr><tr><td>Keeley Nizza</td>
+<td>3.75</td><td>27%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Millie Elliott</td>
+<td>3.75</td><td>27%</td>
+<td>29.00</td>
+<td>29.00</td></tr><tr><td>Aliyah Nasio</td>
+<td>4.75</td><td>21%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Otesa Pule</td>
+<td>4.75</td><td>21%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Rima Butler</td>
+<td>5.00</td><td>20%</td>
+<td>41.00</td>
+<td>41.00</td></tr></tbody></table></div><div class="marche">Parramatta Eels (F)
+<span class="det">17 joueurs cotés</span></div>
+<div class="defilement"><table>
+<thead><tr><th>joueur</th><th>à tout moment</th><th>proba implicite</th>
+<th>premier essai</th><th>dernier essai</th></tr></thead>
+<tbody><tr><td>Fleur Ginn</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Rory Owen</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Zali Fay</td>
+<td>5.00</td><td>20%</td>
+<td>34.00</td>
+<td>34.00</td></tr><tr><td>Abbi Church</td>
+<td>7.00</td><td>14%</td>
+<td>41.00</td>
+<td>41.00</td></tr><tr><td>Lindsay Tui</td>
+<td>8.50</td><td>12%</td>
+<td>51.00</td>
+<td>51.00</td></tr><tr><td>Chloe Jackson</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Elsie Albert</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Jasmin Morrissey</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Mahalia Murphy</td>
+<td>11.00</td><td>9%</td>
+<td>67.00</td>
+<td>67.00</td></tr><tr><td>Cassey Tohi-Hiku</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr><tr><td>Jayde Herdegen</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr><tr><td>Keilee Joseph</td>
+<td>13.00</td><td>8%</td>
+<td>81.00</td>
+<td>81.00</td></tr><tr><td>Boss Kapua</td>
+<td>17.00</td><td>6%</td>
+<td>101.00</td>
+<td>101.00</td></tr><tr><td>Rueben Cherrington</td>
+<td>17.00</td><td>6%</td>
+<td>101.00</td>
+<td>101.00</td></tr><tr><td>Ryvrr-Lee Alo</td>
+<td>17.00</td><td>6%</td>
+<td>101.00</td>
+<td>101.00</td></tr><tr><td>Taneka Todhunter</td>
+<td>17.00</td><td>6%</td>
+<td>101.00</td>
+<td>101.00</td></tr><tr><td>Tess McWilliams</td>
+<td>17.00</td><td>6%</td>
+<td>101.00</td>
+<td>101.00</td></tr></tbody></table></div></article>
+<footer>Les cotes changent en permanence ; ce relevé date de 08/08/2026 à 18h47.<br>
+<a href="index.html">Retour au rapport du jour</a> ·
+<a href="https://github.com/Jejeh040/marqueurs-xiii">Code source</a></footer>
+</div><script>
+  var racine = document.documentElement;
+  var bouton = document.getElementById('bascule');
+  var garde = null;
+  try { garde = localStorage.getItem('theme'); } catch (e) {}
+  if (garde) { racine.setAttribute('data-theme', garde); }
+  function libelle() {
+    var sombre = racine.getAttribute('data-theme') === 'dark'
+      || (!racine.getAttribute('data-theme')
+          && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    bouton.textContent = sombre ? 'Thème clair' : 'Thème sombre';
+    return sombre;
+  }
+  libelle();
+  bouton.addEventListener('click', function () {
+    var sombre = racine.getAttribute('data-theme') === 'dark'
+      || (!racine.getAttribute('data-theme')
+          && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var neuf = sombre ? 'light' : 'dark';
+    racine.setAttribute('data-theme', neuf);
+    try { localStorage.setItem('theme', neuf); } catch (e) {}
+    libelle();
+  });
+</script></body></html>
