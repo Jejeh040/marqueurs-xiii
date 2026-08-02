@@ -7,3 +7,6 @@ __pycache__/
 *.pyc
 *.tmp
 .env
+
+# repertoire de travail de la branche gh-pages
+.pages/

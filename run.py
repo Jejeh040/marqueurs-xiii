@@ -1,18 +1,20 @@
 """Point d'entrée : met à jour la base, relève les cotes, écrit le rapport.
 
-    python run.py            met à jour, analyse, ouvre le rapport
+    python run.py            met à jour, analyse, publie le site, ouvre le rapport
     python run.py --muet     idem sans ouvrir le navigateur (tâche planifiée)
+    python run.py --sans-site   ne publie pas sur GitHub Pages
     python run.py --hors-ligne  n'interroge pas SofaScore, réutilise la base
 """
 
 from __future__ import annotations
 
+import datetime
 import os
 import sys
 import time
 import webbrowser
 
-from src import historique, journal, kambi, model, report, sofascore, valeur
+from src import historique, journal, kambi, model, pages, report, sofascore, valeur
 
 RACINE = os.path.dirname(os.path.abspath(__file__))
 
@@ -161,11 +163,18 @@ def main():
 
     alerte = valeur.penchant(analyses)
     print("5. Rapport")
+    jour = datetime.date.today().isoformat()
     chemin = report.ecrire(report.construire(
-        analyses, journal.bilan(), alerte, avertissements))
+        analyses, journal.bilan(), alerte, avertissements,
+        report.archives_disponibles(jour), jour), jour)
     conseils = sum(1 for a in analyses for c in a["camps"] for l in c["lignes"]
                    if l.get("verdict") == "conseille")
     print(f"   {conseils} pari(s) conseillé(s) — {chemin}")
+
+    if "--sans-site" not in args:
+        print("6. Publication du site")
+        pages.publier()
+
     print(f"   terminé en {time.time() - debut:.0f} s")
     if "--muet" not in args:
         webbrowser.open("file:///" + chemin.replace("\\", "/"))

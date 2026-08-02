@@ -1,10 +1,21 @@
 # Marqueurs XIII — paris sur les marqueurs d'essai au rugby à XIII
 
+### 👉 Le rapport du jour : **https://jejeh040.github.io/marqueurs-xiii/**
+
+
 Outil gratuit, sans clé ni compte. Il estime, pour chaque joueur des matchs du
 jour, sa chance de marquer un essai, compare cette estimation à la cote réelle
 d'Unibet et signale les écarts qui valent peut-être un pari.
 
 **Lancer :** double-cliquer sur `Lancer.bat`. Le rapport s'ouvre tout seul.
+
+**Site public :** https://jejeh040.github.io/marqueurs-xiii/ — le rapport du jour
+plus les treize précédents, accessibles par le bandeau de dates en haut. Publié
+automatiquement à chaque lancement (`--sans-site` pour s'en passer). Le site vit
+sur la branche `gh-pages`, tenue à un seul commit réécrit à chaque fois : sans
+ça, deux rapports par jour feraient grossir le dépôt de dizaines de mégaoctets
+par an. GitHub met deux à cinq minutes à reconstruire la page — un 404 juste
+après publication est normal, ne pas relancer en boucle.
 
 **Automatique :** tâche Windows « Marqueurs13 - rapport », **8 h et 20 h chaque
 jour**. Celle de 20 h est la plus utile : elle attrape les matchs NRL du
@@ -182,6 +193,7 @@ src/kambi.py        relevé des cotes
 src/valeur.py       croisement modèle/marché et garde-fous
 src/journal.py      suivi des conseils et de leur résultat
 src/report.py       rapport HTML
+src/pages.py        publication du site sur GitHub Pages
 data/               base, cotes en cache, journal
 rapports/           un fichier par jour + dernier.html
 ```

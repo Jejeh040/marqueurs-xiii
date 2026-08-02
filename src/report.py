@@ -47,6 +47,11 @@ tr:last-child td{border-bottom:none}
 .stat span{font-size:11px;color:var(--doux);text-transform:uppercase;letter-spacing:.04em}
 .repli{margin-top:10px}
 summary{cursor:pointer;color:var(--doux);font-size:13px}
+.archives{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
+.archives a{font-size:12px;padding:4px 10px;border-radius:99px;text-decoration:none;
+background:var(--carte);border:1px solid var(--trait);color:var(--doux)}
+.archives a:hover{border-color:var(--doux);color:var(--texte)}
+.archives a.actif{background:var(--texte);color:var(--fond);border-color:var(--texte)}
 .scroll{overflow-x:auto}
 footer{color:var(--doux);font-size:12px;margin:24px 0 8px;line-height:1.6}
 """
@@ -117,8 +122,24 @@ def _camp(camp: dict, complet: bool) -> str:
     return corps
 
 
+def _archives(liste, courant) -> str:
+    """Bandeau de liens vers les rapports des jours précédents."""
+    if not liste:
+        return ""
+    liens = []
+    for jour, fichier in liste:
+        try:
+            libelle = datetime.date.fromisoformat(jour).strftime("%d/%m")
+        except ValueError:
+            libelle = jour
+        actif = " class='actif'" if jour == courant else ""
+        liens.append(f"<a href='{_e(fichier)}'{actif}>{libelle}</a>")
+    return "<nav class='archives'>" + "".join(liens) + "</nav>"
+
+
 def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,
-               avertissements: list[str] | None = None) -> str:
+               avertissements: list[str] | None = None,
+               archives: list | None = None, jour: str | None = None) -> str:
     conseils = [l for a in analyses for c in a["camps"] for l in c["lignes"]
                 if l.get("verdict") == "conseille"]
     maintenant = datetime.datetime.now().strftime("%d/%m/%Y à %H:%M")
@@ -171,6 +192,7 @@ def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,
 <title>Marqueurs XIII — {maintenant}</title><style>{CSS}</style></head><body><div class="page">
 <h1>Marqueurs d'essai — rugby à XIII</h1>
 <div class="sous">Généré le {maintenant} · cotes Unibet (offre publique Kambi) · NRL et Super League</div>
+{_archives(archives or [], jour or datetime.date.today().isoformat())}
 {''.join(tetes)}
 {barre}
 {''.join(corps) if corps else "<div class='carte'>Aucun match coté pour le moment.</div>"}
@@ -188,10 +210,25 @@ Un avantage affiché n'est pas de l'argent gagné. Mises plates et petites, jeu 
 </div></body></html>"""
 
 
-def ecrire(contenu: str) -> str:
+JOURS_ARCHIVES = 14
+
+
+def archives_disponibles(jour_courant: str | None = None) -> list[tuple[str, str]]:
+    """Les derniers rapports déjà écrits, du plus récent au plus ancien."""
+    if not os.path.isdir(DOSSIER):
+        jours = []
+    else:
+        jours = sorted((f[:-5] for f in os.listdir(DOSSIER)
+                        if f.endswith(".html") and f[:4].isdigit()), reverse=True)
+    if jour_courant and jour_courant not in jours:
+        jours.insert(0, jour_courant)
+    return [(j, j + ".html") for j in jours[:JOURS_ARCHIVES]]
+
+
+def ecrire(contenu: str, jour: str | None = None) -> str:
     os.makedirs(DOSSIER, exist_ok=True)
-    nom = datetime.datetime.now().strftime("%Y-%m-%d") + ".html"
-    chemin = os.path.join(DOSSIER, nom)
+    jour = jour or datetime.date.today().isoformat()
+    chemin = os.path.join(DOSSIER, jour + ".html")
     with open(chemin, "w", encoding="utf-8") as f:
         f.write(contenu)
     with open(os.path.join(DOSSIER, "dernier.html"), "w", encoding="utf-8") as f:
