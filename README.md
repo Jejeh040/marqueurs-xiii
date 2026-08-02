@@ -9,8 +9,13 @@ d'Unibet et signale les écarts qui valent peut-être un pari.
 
 **Lancer :** double-cliquer sur `Lancer.bat`. Le rapport s'ouvre tout seul.
 
-**Site public :** https://jejeh040.github.io/marqueurs-xiii/ — le rapport du jour
-plus les treize précédents, accessibles par le bandeau de dates en haut. Publié
+**Site public :** https://jejeh040.github.io/marqueurs-xiii/ — deux pages, dans la
+même charte que le site *aces* : `index.html` le rapport du jour (synthèse, paris
+conseillés, onglets par compétition, une carte par match avec la distribution du
+nombre d'essais, journal des conseils) et `cotes.html` toutes les cotes marqueur
+d'essai du moment, y compris les compétitions hors modèle. Thème clair/sombre
+mémorisé. Les treize rapports précédents restent accessibles par le bandeau de
+dates en haut. Publié
 automatiquement à chaque lancement (`--sans-site` pour s'en passer). Le site vit
 sur la branche `gh-pages`, tenue à un seul commit réécrit à chaque fois : sans
 ça, deux rapports par jour feraient grossir le dépôt de dizaines de mégaoctets
@@ -192,7 +197,8 @@ src/model.py        le modèle
 src/kambi.py        relevé des cotes
 src/valeur.py       croisement modèle/marché et garde-fous
 src/journal.py      suivi des conseils et de leur résultat
-src/report.py       rapport HTML
+src/theme.py        charte du site (CSS, thème clair/sombre, onglets)
+src/report.py       les deux pages HTML
 src/pages.py        publication du site sur GitHub Pages
 data/               base, cotes en cache, journal
 rapports/           un fichier par jour + dernier.html
