@@ -1,0 +1,9 @@
+# Données reconstruites automatiquement au premier lancement (~4 min)
+data/
+logs/
+rapports/
+
+__pycache__/
+*.pyc
+*.tmp
+.env
