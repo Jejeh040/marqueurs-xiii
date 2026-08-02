@@ -169,6 +169,7 @@ def main():
         report.archives_disponibles(jour), jour), jour)
     conseils = sum(1 for a in analyses for c in a["camps"] for l in c["lignes"]
                    if l.get("verdict") == "conseille")
+    report.ecrire_cotes(report.construire_cotes(releve))
     print(f"   {conseils} pari(s) conseillé(s) — {chemin}")
 
     if "--sans-site" not in args:

@@ -65,6 +65,9 @@ def _remplir():
     if fichiers:
         shutil.copy(os.path.join(RAPPORTS, fichiers[0]),
                     os.path.join(TRAVAIL, "index.html"))
+    cotes = os.path.join(RAPPORTS, "cotes.html")
+    if os.path.exists(cotes):
+        shutil.copy(cotes, os.path.join(TRAVAIL, "cotes.html"))
     # Empêche Jekyll de réinterpréter les pages : ce sont des HTML finis.
     open(os.path.join(TRAVAIL, ".nojekyll"), "w").close()
     return fichiers
