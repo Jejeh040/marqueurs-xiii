@@ -35,6 +35,11 @@ K_JOUEUR = 2.5            # essais attendus de régularisation du multiplicateur
 # 1,0 = pas de compression. Elle valait 0,85 tant que la base tenait en 1 430
 # matchs : elle compensait le bruit. À 2 585 matchs elle ne sert plus (0,4474
 # à 0,85 contre 0,4469 à 1,0). Ne pas la réactiver sans remesurer.
+# Compression des écarts entre joueurs. Utile tant que la base tenait sur 4
+# saisons (0,85 : perte log 0,4572 -> 0,4526) ; devenue nuisible à 8 saisons.
+# Mesuré sur 33 336 cas : perte log identique (0,4458) mais les biais par poste
+# se resserrent nettement, ailier 0,940 -> 0,988 et pilier 1,090 -> 0,968.
+# Le niveau général, lui, est fixé par le total d'essais du marché en production.
 COMPRESSION = 1.0
 K_DEFENSE = 45.0          # essais encaissés de régularisation vers 1,0
 K_COTE = 60.0             # idem pour le côté du terrain (échantillon plus fin)

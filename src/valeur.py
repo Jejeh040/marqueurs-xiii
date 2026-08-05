@@ -26,7 +26,7 @@ from . import kambi, model
 # Garde-fous. Chacun répond à une erreur constatée, pas à une intuition.
 COTE_MAXI = 7.0         # au-delà, l'erreur du modèle dépasse l'avantage supposé
 COTE_MINI = 1.30        # en dessous, la marge du book mange tout le gain
-GAIN_MINI = 0.08        # il faut p x cote >= 1,08 pour couvrir l'erreur d'estimation
+GAIN_MINI = 0.12        # il faut p x cote >= 1,12 pour couvrir l'erreur d'estimation
 GAIN_MAXI = 0.40        # au-delà, c'est une erreur de modèle, pas une occasion
 ECART_RELATIF_MAX = 1.5  # contredire le marché de plus de 50 % en relatif = erreur
 PROBA_MAXI = 0.50        # au-dessus, le modèle est mesuré optimiste (56 % pour 51 %)

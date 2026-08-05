@@ -316,7 +316,28 @@ n'est possible faute de source gratuite.</p></div>
 <div class="syn"><dt>réussite</dt><dd>{reussite}{attendue}</dd></div>
 <div class="syn"><dt>rendement</dt><dd{classe}>{roi_txt}</dd></div>
 <div class="syn"><dt>en attente</dt><dd>{bilan['en_attente']}<small> · {bilan['rembourses']} remboursés</small></dd></div>
-</dl>{derniers}</section>"""
+</dl>{_verdict_journal(bilan)}{derniers}</section>"""
+
+
+SEUIL_PREUVE = 100
+
+
+def _verdict_journal(bilan: dict) -> str:
+    """Dit en clair ce que le bilan prouve — et surtout ce qu'il ne prouve pas."""
+    n = bilan["tranches"]
+    if not n:
+        return ""
+    attendus = (bilan["attendue"] or 0) * n
+    classe = "gain" if (bilan["roi"] or 0) > 0 else "perte"
+    phrase = (f"<b>{bilan['gagnes']}</b> conseil{'s' if bilan['gagnes'] > 1 else ''} "
+              f"gagné{'s' if bilan['gagnes'] > 1 else ''} sur {n}, "
+              f"pour <b>{attendus:.1f}</b> attendus. "
+              f"Bilan : <b>{bilan['gain']:+.2f}</b> unité"
+              f"{'s' if abs(bilan['gain']) >= 2 else ''} de mise.")
+    if n < SEUIL_PREUVE:
+        phrase += (f" Sur {n} paris, ça ne prouve rien dans un sens ni dans l'autre — "
+                   f"il en faut environ {SEUIL_PREUVE}.")
+    return f"<p class='rendement {classe}'>{phrase}</p>"
 
 
 def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,

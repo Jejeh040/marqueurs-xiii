@@ -211,6 +211,11 @@ summary:hover{color:var(--ink)}
 .quoi-pari b{color:var(--ink)}
 .reel{flex:none;color:var(--ink-soft);font-family:var(--font-data);font-size:12.5px;
   font-variant-numeric:tabular-nums}
+.rendement{margin:0;padding:13px 20px;font-size:13.5px;color:var(--ink-soft);
+  border-left:3px solid var(--line);border-top:1px solid var(--line);background:var(--surface)}
+.rendement b{color:var(--ink);font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.rendement.gain{border-left-color:var(--over)}
+.rendement.perte{border-left-color:var(--under)}
 .vide{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
   padding:38px 20px;text-align:center;color:var(--ink-soft)}
 .vide-journal{padding:26px 20px;text-align:center;color:var(--ink-soft);font-size:13.5px}
