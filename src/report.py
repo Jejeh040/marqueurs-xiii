@@ -228,6 +228,34 @@ def _carte(a: dict) -> str:
 # Page principale
 # --------------------------------------------------------------------------
 
+ISSUES = {"gagne": ("gagné", "gagne"), "perdu": ("perdu", "perdu"),
+          "rembourse": ("remboursé", "rembourse")}
+
+
+def _derniere_journee(veille: dict | None) -> str:
+    """Le résultat des conseils de la dernière journée jouée, en haut de page."""
+    if not veille or not veille["fiches"]:
+        return ""
+    try:
+        libelle = datetime.date.fromisoformat(veille["jour"]).strftime("%d/%m/%Y")
+    except ValueError:
+        libelle = veille["jour"]
+    lignes = "".join(f"""<div class="pari">
+<span class="issue {ISSUES.get(f['resultat'], ('', ''))[1]}">{ISSUES.get(f['resultat'], ('', ''))[0]}</span>
+<span class="quoi-pari"><b>{_e(f['joueur'])}</b> — {_e(f['match'])}</span>
+<span class="reel">cote {f['cote']:.2f} · annoncé {f['p_modele']:.0%}</span>
+</div>""" for f in veille["fiches"])
+    classe = "gain" if veille["gain"] > 0 else "perte"
+    resume = (f"<b>{veille['gagnes']}</b> sur <b>{veille['joues']}</b> "
+              f"pour {veille['attendus']:.1f} attendus · "
+              f"<b>{veille['gain']:+.2f}</b> unité"
+              f"{'s' if abs(veille['gain']) >= 2 else ''}")
+    return f"""<section class="bilan"><div class="bilan-tete">
+<h2>Résultats de la journée du {libelle}</h2>
+<p>Les conseils déjà tranchés sur le résultat réel des matchs.</p></div>
+<p class="rendement {classe}">{resume}</p>{lignes}</section>"""
+
+
 FAVORIS = 14
 
 
@@ -342,7 +370,8 @@ def _verdict_journal(bilan: dict) -> str:
 
 def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,
                avertissements: list[str] | None = None,
-               archives: list | None = None, jour: str | None = None) -> str:
+               archives: list | None = None, jour: str | None = None,
+               veille: dict | None = None) -> str:
     maintenant = datetime.datetime.now().strftime("%d/%m/%Y à %Hh%M")
     conseils = sum(1 for a in analyses for c in a["camps"] for l in c["lignes"]
                    if l.get("verdict") == "conseille")
@@ -388,6 +417,7 @@ def construire(analyses: list[dict], bilan: dict, alerte: str | None = None,
     corps = f"""{_entete("Marqueurs d'essai", sous, "rapport", archives, jour)}
 {synthese}
 {''.join(avis)}
+{_derniere_journee(veille)}
 {_favoris_du_jour(analyses)}
 {_conseils_du_jour(analyses)}
 {corps_matchs}

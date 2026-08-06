@@ -130,10 +130,21 @@ def main():
             print(f"   {n} conseil(s) tranché(s)")
         except Exception as exc:
             print("   ⚠ règlement impossible :", exc)
+        try:
+            n = journal.regler_archive()
+            print(f"   {n} prédiction(s) archivée(s) tranchée(s)")
+        except Exception as exc:
+            print("   ⚠ archive non réglée :", exc)
         for a in analyses:
             if not a.get("sofa"):
                 continue
             for camp in a["camps"]:
+                journal.archiver(a["event_kambi"], {
+                    "sofa": a.get("sofa"),
+                    "competition": a["competition"],
+                    "date_match": a.get("date_match"),
+                    "equipe": camp["nom"],
+                }, camp["lignes"])
                 journal.enregistrer(a["event_kambi"], {
                     "sofa": a.get("sofa"),
                     "competition": a["competition"],
@@ -166,7 +177,8 @@ def main():
     jour = datetime.date.today().isoformat()
     chemin = report.ecrire(report.construire(
         analyses, journal.bilan(), alerte, avertissements,
-        report.archives_disponibles(jour), jour), jour)
+        report.archives_disponibles(jour), jour,
+        journal.derniere_journee()), jour)
     conseils = sum(1 for a in analyses for c in a["camps"] for l in c["lignes"]
                    if l.get("verdict") == "conseille")
     report.ecrire_cotes(report.construire_cotes(releve))
