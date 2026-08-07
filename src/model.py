@@ -31,6 +31,12 @@ JOUR = 86400.0
 # est venu du volume de données, pas de ces quatre nombres.
 DEMI_VIE = 300.0          # jours : mémoire des performances d'équipe
 DEMI_VIE_JOUEUR = 750.0   # jours : mémoire des essais d'un joueur
+# Mémoire du seul niveau général, bien plus courte que celle des forces
+# relatives. Balayée sur 26 600 prédictions : 120 jours donne le meilleur
+# ajustement des totaux d'équipe et ramène le biais joueur de 0,991 à 0,997.
+# La discrimination, elle, ne bouge pas (perte log 0,44529 dans les deux cas) :
+# ce réglage corrige un niveau, il ne fait pas mieux départager les joueurs.
+DEMI_VIE_NIVEAU = 120.0
 K_JOUEUR = 2.5            # essais attendus de régularisation du multiplicateur
 # 1,0 = pas de compression. Elle valait 0,85 tant que la base tenait en 1 430
 # matchs : elle compensait le bruit. À 2 585 matchs elle ne sert plus (0,4474
@@ -77,6 +83,7 @@ class Modele:
         self.reference = reference or max((m["date"] for m in matchs), default=0)
         self._preparer()
         self._ajuster_equipes()
+        self._recaler_niveau()
         self._ajuster_joueurs()
         self._ajuster_defenses()
 
@@ -163,6 +170,35 @@ class Modele:
         self.att, self.dfn, self.base, self.adv = eclater(res.x)
         self.convergence = bool(res.success)
 
+    def _recaler_niveau(self):
+        """Remet le niveau général de chaque compétition sur sa période récente.
+
+        Mesuré le 08/08/2026 : hors échantillon le modèle attend 3 % d'essais de
+        moins qu'il n'en tombe (biais 0,970), et ce défaut ne bouge pas avec la
+        régularisation. La cause est une dérive du jeu — NRL +1,6 % par saison,
+        et surtout Super League passée de 3,55 essais par camp en 2025 à 4,02 en
+        2026. Une demi-vie de 300 jours mélange les deux niveaux ; on rattrape
+        donc le niveau seul, sur une mémoire beaucoup plus courte, sans toucher
+        aux forces relatives des équipes.
+        """
+        self.recalage = {}
+        if not DEMI_VIE_NIVEAU:
+            return
+        attendu = defaultdict(float)
+        reel = defaultdict(float)
+        for c in self.camps:
+            w = _poids(c["age"], DEMI_VIE_NIVEAU)
+            if w < 1e-3:
+                continue
+            t = c["tournoi"]
+            attendu[t] += w * self.essais_attendus(
+                c["equipe"], c["adversaire"], t, c["dom"])
+            reel[t] += w * c["n_essais"]
+        for t, a in attendu.items():
+            if a <= 0 or reel[t] <= 0:
+                continue
+            self.recalage[t] = min(max(reel[t] / a, 0.80), 1.25)
+
     def essais_attendus(self, equipe, adversaire, tournoi, dom: bool) -> float:
         it = self.tournois.get(tournoi)
         if it is None:
@@ -171,7 +207,8 @@ class Modele:
         adv = self.adv[it] if dom else 0.0
         a = self.att[self.equipes[equipe]] if equipe in self.equipes else 0.0
         d = self.dfn[self.equipes[adversaire]] if adversaire in self.equipes else 0.0
-        return float(np.exp(np.clip(base + a - d + adv, -6, 4)))
+        brut = float(np.exp(np.clip(base + a - d + adv, -6, 4)))
+        return brut * getattr(self, "recalage", {}).get(tournoi, 1.0)
 
     # ------------------------------------------------------------------
     # Étage 2 : part de chaque joueur dans les essais de son équipe
