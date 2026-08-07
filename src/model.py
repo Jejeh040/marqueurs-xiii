@@ -47,6 +47,7 @@ K_JOUEUR = 2.5            # essais attendus de régularisation du multiplicateur
 # se resserrent nettement, ailier 0,940 -> 0,988 et pilier 1,090 -> 0,968.
 # Le niveau général, lui, est fixé par le total d'essais du marché en production.
 COMPRESSION = 1.0
+K_ATTAQUE = 60.0          # essais marqués de régularisation du style de jeu
 K_DEFENSE = 45.0          # essais encaissés de régularisation vers 1,0
 K_COTE = 60.0             # idem pour le côté du terrain (échantillon plus fin)
 REGUL_EQUIPE = 0.02       # pénalité L2 sur attaque/défense
@@ -74,7 +75,9 @@ class Modele:
     # grossi. Ne pas le rallumer sans nouvelle mesure.
     def __init__(self, matchs: list[dict], reference: float | None = None,
                  sans_poste: bool = False, sans_defense: bool = True,
-                 sans_cote: bool = True, sans_minutes: bool = False):
+                 sans_cote: bool = True, sans_minutes: bool = False,
+                 sans_style: bool = True):
+        self.sans_style = sans_style
         self.sans_minutes = sans_minutes
         self.sans_poste = sans_poste
         self.sans_defense = sans_defense
@@ -248,6 +251,31 @@ class Modele:
                             for p in postes.POSTES}
         self.minutes_bucket = {p: (minutes[p] / joueurs_vus[p]) if joueurs_vus.get(p)
                                else DUREE for p in postes.POSTES}
+        # Style de jeu : une équipe qui joue au large nourrit ses ailiers, une
+        # équipe qui pilonne près de la ligne nourrit ses avants. On mesure
+        # l'écart de chaque équipe à la répartition moyenne de la ligue,
+        # fortement régularisé.
+        self.style = {}
+        if not self.sans_style:
+            enc = defaultdict(lambda: defaultdict(float))
+            tot_eq = defaultdict(float)
+            for c in self.camps:
+                if not c["positionnel"]:
+                    continue
+                for e in c["essais"]:
+                    po = postes.depuis_maillot(e.get("maillot"))[0]
+                    enc[c["equipe"]][po] += c["poids"]
+                    tot_eq[c["equipe"]] += c["poids"]
+            part_ligue = {p: (num.get(p, 0.0) / max(sum(num.values()), 1e-9))
+                          for p in postes.POSTES}
+            for eq, total in tot_eq.items():
+                for p in postes.POSTES:
+                    base = part_ligue.get(p, 0.0)
+                    if base <= 0:
+                        continue
+                    part = (enc[eq].get(p, 0.0) + K_ATTAQUE * base) / (total + K_ATTAQUE)
+                    self.style[(eq, p)] = part / base
+
         mtot = sum(minutes.values())
         self.taux_moyen = (total / mtot) if mtot else 1.0 / (17 * DUREE)
         self.minutes_moyennes = (mtot / sum(joueurs_vus.values())) if joueurs_vus else DUREE
@@ -281,7 +309,8 @@ class Modele:
                 marqueurs[cle(e["joueur"])] += 1.0
             buckets = self.buckets_du_camp(c["joueurs"], c["positionnel"])
             reelles = [self._minutes(p) for p in c["joueurs"]]
-            parts = self.parts_du_camp(c["joueurs"], c["positionnel"], buckets, reelles)
+            parts = self.parts_du_camp(c["joueurs"], c["positionnel"], buckets, reelles,
+                                       c["equipe"])
             for p, part, mn in zip(c["joueurs"], parts, reelles):
                 k = cle(p["joueur"])
                 po, co = self.poste_de(p, c["positionnel"])
@@ -356,7 +385,7 @@ class Modele:
 
     def parts_du_camp(self, joueurs: list[dict], positionnel: bool,
                       buckets: list | None = None,
-                      minutes: list | None = None) -> list[float]:
+                      minutes: list | None = None, equipe=None) -> list[float]:
         """Part de chaque joueur dans les essais de l'équipe, avant son historique.
 
         Produit d'un taux par minute (celui de son poste) et du temps de jeu
@@ -373,6 +402,8 @@ class Modele:
         brut = []
         for b, m in zip(buckets, minutes):
             taux = (self.taux_bucket.get(b) if b else None) or self.taux_moyen
+            if b and equipe is not None:
+                taux *= self.style.get((equipe, b), 1.0)
             brut.append(max(taux, 1e-9) * max(m, 1.0))
         s = sum(brut)
         return [x / s for x in brut] if s > 0 else [1.0 / n] * n
@@ -439,7 +470,7 @@ class Modele:
         buckets = self.buckets_du_camp(effectif, positionnel)
         minutes = [self.minutes_attendues(cle(j["nom"]), b, j)
                    for j, b in zip(effectif, buckets)]
-        places = self.parts_du_camp(effectif, positionnel, buckets, minutes)
+        places = self.parts_du_camp(effectif, positionnel, buckets, minutes, equipe)
 
         lignes = []
         for j, place, po, mn in zip(effectif, places, buckets, minutes):
