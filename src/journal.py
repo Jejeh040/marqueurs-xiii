@@ -140,8 +140,16 @@ def archiver(event_id: int, contexte: dict, lignes: list[dict]) -> None:
         if not l.get("cote") or l.get("p_marche") is None:
             continue
         ref = f"{event_id}:{l['cle']}"
-        if a["lignes"].get(ref, {}).get("resultat") is not None:
+        deja = a["lignes"].get(ref)
+        if deja and deja.get("resultat") is not None:
             continue
+        # Mouvement de la cote : on garde le premier prix vu et le dernier.
+        # Un prix qui se raccourcit a été pris par de l'argent informé (« steam »),
+        # celui qui s'allonge a été délaissé. C'est le seul signal de marché
+        # gratuit qui reste ici, les 7 marques Kambi affichant des cotes
+        # identiques au centime et Superbet ne cotant pas le rugby à XIII.
+        debut = deja.get("cote_debut") if deja else None
+        premier_vu = deja.get("vu_debut") if deja else None
         a["lignes"][ref] = {
             "sofa": contexte.get("sofa"),
             "date_match": contexte.get("date_match"),
@@ -151,6 +159,9 @@ def archiver(event_id: int, contexte: dict, lignes: list[dict]) -> None:
             "equipe": contexte.get("equipe"),
             "poste": l.get("poste"),
             "cote": round(l["cote"], 2),
+            "cote_debut": debut if debut is not None else round(l["cote"], 2),
+            "vu_debut": premier_vu or time.time(),
+            "vu_le": time.time(),
             "p_modele": round(l["p_essai"], 4),
             "p_marche": round(l["p_marche"], 4),
             "resultat": None,

@@ -19,7 +19,7 @@ DOSSIER = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 FICHIER = os.path.join(DOSSIER, "historique.json")
 
 SAISONS_MINI = 4      # nombre de saisons remontées par compétition
-FILS = 6
+FILS = 4
 
 
 def _charger() -> dict:

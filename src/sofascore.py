@@ -29,7 +29,10 @@ SANS_COMPOSITIONS = {19120: {"nom": "NRL Women", "kambi": "NRL (F)"}}
 _local = threading.local()
 _verrou = threading.Lock()
 _dernier_appel = [0.0]
-PAUSE = 0.05  # secondes entre deux requêtes, tous fils confondus
+# 0,05 s avec 6 fils faisait ~120 requêtes/seconde et déclenchait des 403 en
+# rafale, qui bloquaient ensuite le règlement des paris. 0,15 s suffit largement :
+# la reconstruction complète de la base reste sous les dix minutes.
+PAUSE = 0.15  # secondes entre deux requêtes, tous fils confondus
 
 
 def _session():

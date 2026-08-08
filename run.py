@@ -48,17 +48,30 @@ def _journaliser():
 
 
 def preparer(hors_ligne: bool = False):
+    """Prépare la base et le modèle. Renvoie aussi un éventuel avertissement.
+
+    Une panne de SofaScore (403 quand on l'a trop sollicité) ne doit pas
+    empêcher le rapport : la base locale suffit à faire tourner le modèle, il
+    manque seulement les tout derniers matchs. On le dit, on continue.
+    """
+    souci = None
     if not hors_ligne:
         print("1. Mise à jour de la base de matchs")
-        historique.completer()
-        historique.reparer_remplacements()
+        try:
+            historique.completer()
+            historique.reparer_remplacements()
+        except Exception as exc:
+            souci = (f"Base non mise à jour ({exc}). Le rapport utilise "
+                     "l'historique déjà téléchargé ; les tout derniers matchs "
+                     "peuvent manquer.")
+            print("   ⚠", souci)
     matchs = historique.charger()
     print(f"   base : {len(matchs)} matchs exploitables")
     print("2. Entraînement du modèle")
     mdl = model.Modele(matchs)
     print(f"   {len(mdl.equipes)} équipes, {len(mdl.joueurs)} joueurs connus"
           + ("" if mdl.convergence else "  (⚠ ajustement non convergé)"))
-    return matchs, mdl
+    return matchs, mdl, souci
 
 
 def analyser(matchs, mdl, hors_ligne=False):
@@ -120,7 +133,7 @@ def main():
         _journaliser()
     debut = time.time()
     hors_ligne = "--hors-ligne" in args
-    matchs, mdl = preparer(hors_ligne)
+    matchs, mdl, souci_base = preparer(hors_ligne)
     analyses, inconnus, releve, hors_perimetre = analyser(matchs, mdl, hors_ligne)
 
     print("4. Suivi des conseils passés")
@@ -154,6 +167,8 @@ def main():
                 }, camp["lignes"])
 
     avertissements = []
+    if souci_base:
+        avertissements.append(souci_base)
     if releve.get("erreur"):
         avertissements.append(releve["erreur"])
     if inconnus:
@@ -168,9 +183,8 @@ def main():
     sans_total = [a["rencontre"] for a in analyses if not a.get("total_marche")]
     if sans_total:
         avertissements.append(
-            f"{len(sans_total)} match(s) sans cote de total d'essais (Super League) : "
-            "le modèle y estime seul le nombre d'essais, ses probabilités y sont "
-            "moins sûres.")
+            f"{len(sans_total)} match(s) sans cote de total d'essais : le modèle y "
+            "estime seul le nombre d'essais, ses probabilités y sont moins sûres.")
 
     alerte = valeur.penchant(analyses)
     print("5. Rapport")
