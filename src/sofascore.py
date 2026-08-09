@@ -11,7 +11,15 @@ import time
 
 from curl_cffi import requests
 
-BASE = "https://api.sofascore.com/api/v1"
+# Deux hôtes servent la même API. Depuis le 08/08/2026, `api.sofascore.com`
+# répond {"error":{"code":403,"reason":"challenge"}} derrière son Varnish, quelle
+# que soit l'empreinte de navigateur (13 profils curl_cffi essayés, plus
+# Referer, Origin, X-Requested-With et l'agent de l'appli mobile : tous refusés).
+# `www.sofascore.com/api/v1` sert exactement les mêmes réponses sans challenge.
+# On essaie donc www d'abord et on garde l'autre en repli : le jour où l'un des
+# deux se referme, l'outil continue de tourner sur l'autre.
+HOTES = ["https://www.sofascore.com/api/v1", "https://api.sofascore.com/api/v1"]
+BASE = HOTES[0]
 
 # Compétitions suivies. L'identifiant est celui de SofaScore (uniqueTournament).
 # Le libellé Kambi permet de rapprocher les cotes (voir src/kambi.py).
@@ -52,13 +60,14 @@ def _get(chemin: str, essais: int = 3):
     """
     derniere = None
     for tentative in range(essais):
+        hote = HOTES[tentative % len(HOTES)]
         with _verrou:
             attente = PAUSE - (time.time() - _dernier_appel[0])
             if attente > 0:
                 time.sleep(attente)
             _dernier_appel[0] = time.time()
         try:
-            r = _session().get(BASE + chemin, timeout=25)
+            r = _session().get(hote + chemin, timeout=25)
         except Exception as exc:  # réseau
             derniere = exc
             time.sleep(0.8 * (tentative + 1))
@@ -67,9 +76,9 @@ def _get(chemin: str, essais: int = 3):
             return None
         if r.status_code == 200:
             return r.json()
-        derniere = RuntimeError(f"SofaScore {r.status_code} sur {chemin}")
-        # 403/429 = on nous freine : pause franche avant de réessayer
-        time.sleep(1.5 * (tentative + 1))
+        derniere = RuntimeError(f"SofaScore {r.status_code} sur {chemin} ({hote})")
+        # 403/429 = challenge ou bridage : on change d'hôte au tour suivant
+        time.sleep(1.0 * (tentative + 1))
     raise RuntimeError(f"SofaScore injoignable sur {chemin} ({derniere})")
 
 

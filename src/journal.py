@@ -164,6 +164,7 @@ def archiver(event_id: int, contexte: dict, lignes: list[dict]) -> None:
             "vu_le": time.time(),
             "p_modele": round(l["p_essai"], 4),
             "p_marche": round(l["p_marche"], 4),
+            "modele": model.version(),
             "resultat": None,
         }
     os.makedirs(DOSSIER, exist_ok=True)

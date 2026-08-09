@@ -12,6 +12,7 @@ La probabilité de marquer au moins un essai est ensuite 1 - exp(-lambda).
 
 from __future__ import annotations
 
+import hashlib
 import math
 import unicodedata
 from collections import defaultdict
@@ -53,6 +54,19 @@ K_COTE = 60.0             # idem pour le côté du terrain (échantillon plus fi
 REGUL_EQUIPE = 0.02       # pénalité L2 sur attaque/défense
 MATCHS_DISPO = 8          # matchs récents servant à estimer la probabilité de jouer
 SUR_LE_TERRAIN = 17.0     # joueurs d'une équipe qui foulent la pelouse en moyenne
+
+
+def version() -> str:
+    """Empreinte des réglages du modèle, notée dans chaque prédiction archivée.
+
+    Sans elle, une comparaison modèle/marché mélange les versions : les
+    prédictions du 6 août venaient d'un modèle sans le rattrapage de niveau
+    ajouté le 8, et rien ne permettait de le savoir après coup.
+    """
+    reglages = (DEMI_VIE, DEMI_VIE_JOUEUR, DEMI_VIE_NIVEAU, K_JOUEUR, COMPRESSION,
+                K_ATTAQUE, K_DEFENSE, K_COTE, REGUL_EQUIPE, MATCHS_DISPO,
+                SUR_LE_TERRAIN)
+    return hashlib.sha1(repr(reglages).encode()).hexdigest()[:8]
 
 
 def cle(nom: str) -> str:
